@@ -20,6 +20,8 @@ class CreateAddressesTable extends Migration
             $table->integer('building_number');
             $table->integer('floor_number')->nullable();
             $table->integer('apartment_number')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
