@@ -23,10 +23,9 @@ class AddressFactory extends Factory
     {
         return [
             'street' => $this->faker->streetName,
-            'building_number' => $this->faker->buildingNumber,
+            'building_number' => strval($this->faker->buildingNumber),
             'floor_number' => $this->faker->randomDigit,
             'apartment_number' => $this->faker->randomDigit,
-//            'user_id' => $this->faker->optional()->unique()->numberBetween($min = 1, $max = 10),
         ];
     }
 }
