@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Address;
+use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class AddressController extends Controller
 {
@@ -14,7 +17,6 @@ class AddressController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -35,16 +37,47 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'street' => 'required|string',
+            'building' => 'required|string',
+            'floor_number' => 'nullable|numeric',
+            'apartment_number' => 'nullable|numeric',
+            'user_id' => 'exists:users,id',
+            'area_id' => 'exists:areas,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response('Validation Failed', 400)
+                        ->header('Content-Type', 'text/plain');
+        }
+        else{
+            try{
+                $address = Address::create([
+                    'street' => $request->street,
+                    'building' => $request->building,
+                    'floor_number' => $request->floor_number,
+                    'apartment_number' => $request->apartment_number,
+                    'user_id' => $request->user_id,
+                    'area_id' => $request->area_id
+                ]);
+            }
+            catch(Exception $e){
+                return response($e->getMessage(), 400)
+                                ->header('Content-Type', 'text/plain');
+            }
+            return response('Successfuly created new Address entry', 400)
+                            ->header('Content-Type', 'text/plain');
+        }
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Address $address)
+    public function show($id)
     {
         //
     }
@@ -52,10 +85,10 @@ class AddressController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Address $address)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +97,10 @@ class AddressController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Address  $address
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Address $address)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +108,10 @@ class AddressController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Address  $address
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $address)
+    public function destroy($id)
     {
         //
     }
