@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateAddressesTable extends Migration
 {
     /**
@@ -17,7 +17,7 @@ class CreateAddressesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('street');
-            $table->string('building_number');
+            $table->string('building');
             $table->integer('floor_number')->nullable();
             $table->integer('apartment_number')->nullable();
             $table->unsignedBigInteger('user_id');
