@@ -18,4 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('addresses', AddressController::class);
+Route::get('/addresses/user/{id}', [AddressController::class, 'show_user_addresses', '{id}']);
+Route::post('/addresses', [AddressController::class, 'store']);

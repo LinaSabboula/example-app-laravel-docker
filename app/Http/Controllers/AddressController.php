@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Address;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class AddressController extends Controller
 {
@@ -17,6 +18,7 @@ class AddressController extends Controller
      */
     public function index()
     {
+
     }
 
     /**
@@ -79,13 +81,45 @@ class AddressController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
-
+    
+    /**
+     * Display all addresses associated with a specific user
+     *
+     * @param  int $id
+     * @return void
+     */
+    public function show_user_addresses($id){
+        $addresses = Address::where('user_id', $id)
+                                    ->orderByDesc('created_at')
+                                    ->get();
+        $addresses_array = array();
+        foreach ($addresses as $address) {
+            $current_address = array (
+                                    'created_id' => $address->created_at,
+                                    'street' => $address->street,
+                                    'building' => $address->building,
+                                    'floor_number' => $address->floor_number,
+                                    'apartment_number' => $address->apartment_number,
+                                    'area_id' => $address->area_id,
+                                    );
+            
+            array_push($addresses_array, $current_address);
+        }
+        if(!$addresses_array){
+            return response('user_id is invalid', 400)
+                    ->header('Content-Type', 'text/plain');
+        }
+        else{
+            return response(json_encode($addresses_array), 200)
+                        ->header('Content-Type', 'application/json');
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id 
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
