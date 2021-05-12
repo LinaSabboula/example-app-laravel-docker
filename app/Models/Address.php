@@ -14,9 +14,13 @@ class Address extends Model
         'floor_number',
         'apartment_number',
         'user_id',
+        'area_id',
     ];
     public function user(){
         return $this->belongsTo(User::class);
+    }
+    public function area(){
+        return $this->belongsTo(Area::class);
     }
 
 }

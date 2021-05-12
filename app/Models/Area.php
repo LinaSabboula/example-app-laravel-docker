@@ -14,4 +14,7 @@ class Area extends Model
     function city(){
         return $this->belongsTo(City::class);
     }
+    function addresses(){
+        return $this->hasMany(Address::class);
+    }
 }
