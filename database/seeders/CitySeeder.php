@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,15 +15,9 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        $city_name = 'Nasr City';
-        $government_name = 'Cairo';
-        $government_id = DB::table('governments')
-                                ->where('name', 'like', $government_name)
-                                ->value('id');
-
-        DB::table('cities') -> insert([
-            'name' => $city_name,
-            'gov_id' => $government_id,
-        ]);
+        $cities = City::factory()
+                ->count(10)
+                ->create();
+    
     }
 }

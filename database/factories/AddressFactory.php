@@ -26,6 +26,8 @@ class AddressFactory extends Factory
             'building_number' => strval($this->faker->buildingNumber),
             'floor_number' => $this->faker->randomDigit,
             'apartment_number' => $this->faker->randomDigit,
+            'user_id' => $this->faker->numberBetween($min = 1, $max = 15),
+            'area_id' => $this->faker->numberBetween($min = 1, $max = 20),
         ];
     }
 }

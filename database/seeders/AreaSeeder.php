@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,15 +15,8 @@ class AreaSeeder extends Seeder
      */
     public function run()
     {
-        $area_name = 'Makram';
-        $city_name = 'Nasr City';
-        $city_id = DB::table('cities')
-                        ->where('name','like', $city_name)
-                        ->value('id');
-
-        DB::table('areas') -> insert([
-            'name' => $area_name,
-            'city_id' => $city_id,
-        ]);
+        $areas = Area::factory()
+                ->count(20)
+                ->create();
     }
 }

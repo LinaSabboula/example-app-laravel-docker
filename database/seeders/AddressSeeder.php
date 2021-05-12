@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Government;
+use App\Models\Address;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class GovernmentSeeder extends Seeder
+class AddressSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +14,8 @@ class GovernmentSeeder extends Seeder
      */
     public function run()
     {
-        $governments = Government::factory()
-                    ->count(5)
+        $addresses = Address::factory()
+                    ->count(15)
                     ->create();
-
     }
 }
