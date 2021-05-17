@@ -17,8 +17,8 @@ class CreateCitiesTable extends Migration
             $table->id();
             $table->string('name');
             $table->timestamps();
-            $table->unsignedBigInteger('gov_id')->nullable();
-            $table->foreign('gov_id')->references('id')->on('governments');
+            $table->unsignedBigInteger('government_id')->nullable();
+            $table->foreign('government_id')->references('id')->on('governments');
         });
     }
 

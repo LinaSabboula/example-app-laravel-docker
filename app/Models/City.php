@@ -10,6 +10,7 @@ class City extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'government_id',
     ];
     public function areas(){
         return $this->hasMany(Area::class);

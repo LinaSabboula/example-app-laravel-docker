@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\City;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class CitySeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +14,8 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        $cities = City::factory()
-                ->count(10)
+        $users = User::factory()
+                ->count(15)
                 ->create();
-    
     }
 }

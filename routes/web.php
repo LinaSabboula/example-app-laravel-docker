@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use App\Models\Area;
+use App\Models\Address;
+use App\Http\Controllers\AddressController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,21 +20,5 @@ use App\Models\Area;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/city', function (){
-    return DB::table('cities')->get();
-});
-
-Route::get('/gov', function (){
-    return DB::table('governments')->get();
-});
-
-Route::get('/area', function (){
-    return DB::table('areas')->get();
-});
-
-Route::get('/search/{search}', function ($search) {
-    return $search;
-})->where('search', '.*');
 
 
