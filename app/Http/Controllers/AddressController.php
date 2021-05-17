@@ -88,9 +88,9 @@ class AddressController extends Controller
      * Display all addresses associated with a specific user
      *
      * @param  int $id
-     * @return void
+     * @return Response 
      */
-    public function show_user_addresses($id){
+    public function showUserAddresses($id){
         $addresses = Address::where('user_id', $id)
                                     ->orderByDesc('created_at')
                                     ->get();
