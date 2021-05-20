@@ -10,12 +10,29 @@ import ButtonComponent from './ButtonComponent.vue'
 import LabelComponent from "./LabelComponent.vue";
 import TextInputComponent from "./TextInputComponent.vue"
 export default {
+
     components: { ButtonComponent, LabelComponent, TextInputComponent},
     methods: {
         submitForm(){
-            // front-side validation
-            console.log("button has been clicked")
-            console.log(this.textInput)
+            fetch('http://127.0.0.1/api/add-government', {
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+                },
+                method: 'post',
+                mode: 'cors',
+                body: new URLSearchParams({
+                    'name': this.textInput,
+                })
+            })
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (text){
+                    console.log('Request successful: ', text);
+                })
+                .catch(function (error) {
+                    console.log('Request failed', error);
+                });
         }
     },
     data(){
@@ -29,7 +46,7 @@ export default {
             textInput: ''
         }
     }
-    
+
 }
 </script>
 
