@@ -54,7 +54,7 @@ class AddressController extends Controller
         }
         else{
             try{
-                $address = Address::create([
+                Address::create([
                     'street' => $request->street,
                     'building' => $request->building,
                     'floor_number' => $request->floor_number,
@@ -67,7 +67,7 @@ class AddressController extends Controller
                 return response($e->getMessage(), 400)
                                 ->header('Content-Type', 'text/plain');
             }
-            return response('Successfuly created new Address entry', 400)
+            return response('Successfully created new Address entry', 200)
                             ->header('Content-Type', 'text/plain');
         }
 
@@ -81,14 +81,14 @@ class AddressController extends Controller
      */
     public function show($id)
     {
-        
+
     }
-    
+
     /**
      * Display all addresses associated with a specific user
      *
      * @param  int $id
-     * @return Response 
+     * @return \Illuminate\Http\Response
      */
     public function showUserAddresses($id){
         $validator = Validator::make(['id' => $id], [
@@ -109,7 +109,7 @@ class AddressController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id 
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
