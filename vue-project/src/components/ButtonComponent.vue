@@ -1,5 +1,5 @@
 <template>
-    <button :type="type" @click="clickButton">{{ buttonText }}</button>
+    <button :type="type" @click="clickButton">{{ getButtonText }}</button>
 </template>
 
 <script>
@@ -8,11 +8,17 @@ export default {
         'buttonText': {
             type: String,
             required: true,
+            default: "Ok",
         },
         'type': {
             type: String,
             default: 'button',
         },
+    },
+    computed: {
+        getButtonText(){
+            return this.buttonText=== null ? 'OK' : this.buttonText
+        }
     },
     methods: {
         clickButton(){
