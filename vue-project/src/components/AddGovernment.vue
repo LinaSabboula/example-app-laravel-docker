@@ -9,29 +9,20 @@
 import ButtonComponent from './ButtonComponent.vue'
 import LabelComponent from "./LabelComponent.vue";
 import TextInputComponent from "./TextInputComponent.vue"
+import axios from 'axios';
 export default {
-
     components: { ButtonComponent, LabelComponent, TextInputComponent},
     methods: {
         submitForm(){
-            fetch('http://127.0.0.1/api/add-government', {
-                headers: {
-                    "Content-type": "application/x-www-form-urlencoded;charset=UTF-8",
-                },
-                method: 'post',
-                mode: 'cors',
-                body: new URLSearchParams({
-                    'name': this.textInput,
+            const params = new URLSearchParams();
+            params.append('name', this.textInput);
+            const url = 'http://127.0.0.1/api/add-government';
+            axios.post(url, params)
+                .then(function (response){
+                    console.log(response.data)
                 })
-            })
-                .then(function (response) {
-                    return response.text();
-                })
-                .then(function (text){
-                    console.log('Request successful: ', text);
-                })
-                .catch(function (error) {
-                    console.log('Request failed', error);
+                .catch(function (error){
+                    console.log(error)
                 });
         }
     },
@@ -46,10 +37,5 @@ export default {
             textInput: ''
         }
     }
-
 }
 </script>
-
-<style>
-
-</style>
