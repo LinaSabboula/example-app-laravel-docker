@@ -9,6 +9,7 @@
         :name="inputName"
         :required="required"
         v-model.trim="governmentInput"
+        @changeText="changeText"
         :input-disabled="inputDisabled">
     </text-input-component>
 
@@ -42,18 +43,22 @@ export default {
                     this.clearInput();
                 })
                 .catch(error => {
-                    this.responseText = 'Validation Failed: ' + error.response.data[0]
+                    this.changeLoadingScreen();
+                    this.responseText = 'Validation Failed: ' + error.response.data[0];
                 });
         },
         changeLoadingScreen(loading=false, buttonDisabled=false, inputDisabled=false){
             this.loading = loading;
             this.buttonDisabled = buttonDisabled;
             this.inputDisabled = inputDisabled;
-
         },
         clearInput(){
+            this.governmentInput = '';
             this.$refs.inputField.governmentInput = '';
         },
+        changeText(){
+            this.responseText = '';
+        }
     },
     data(){
         return{

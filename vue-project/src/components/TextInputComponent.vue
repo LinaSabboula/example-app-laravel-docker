@@ -4,6 +4,7 @@
         :required="required"
         :name="name"
         :disabled="inputDisabled"
+        @keydown="changeText"
         v-model="governmentInput">
 </template>
 
@@ -27,5 +28,10 @@ export default {
             default: false,
         },
     },
+    methods: {
+        changeText(){
+            this.$emit("changeText");
+        }
+    }
 }
 </script>
