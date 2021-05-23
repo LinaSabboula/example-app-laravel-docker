@@ -5,7 +5,7 @@
 <script>
 export default {
     props: {
-        'buttonText': { 
+        'buttonText': {
             type: String,
             required: true,
         },
@@ -22,19 +22,4 @@ export default {
 }
 </script>
 
-<style>
-    button{
-        color: rgba(255, 255, 255, 0.842);
-        background-color: cornflowerblue;
-        border-radius: 10px;
-        width: auto;
-        height: auto;
-        border-style: none;
-        font-size: 16px;
-        margin: 5px;
-        
-    }
-    button:hover{
-        background-color: rgb(86, 125, 196); 
-    }
-</style>
+<style src="../css/button.css"/>
