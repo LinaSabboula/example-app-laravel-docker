@@ -16,7 +16,7 @@ export default {
         submitForm(){
             const params = new URLSearchParams();
             params.append('name', this.textInput);
-            const url = 'http://127.0.0.1/api/add-government';
+            const url = import.meta.env.VITE_APP_ADD_GOV;
             axios.post(url, params)
                 .then(function (response){
                     console.log(response.data)
