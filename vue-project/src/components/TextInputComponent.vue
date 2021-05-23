@@ -1,5 +1,10 @@
 <template>
-    <input :inputType="inputType"  :required="required"  :name="name" v-model.trim="governmentInput">
+    <input
+        :inputType="inputType"
+        :required="required"
+        :name="name"
+        :disabled="inputDisabled"
+        v-model="governmentInput">
 </template>
 
 <script>
@@ -15,6 +20,11 @@ export default {
         'inputType': {
             type: String,
             default: 'text',
+        },
+        'inputDisabled': {
+            type: Boolean,
+            required: true,
+            default: false,
         },
     },
 }

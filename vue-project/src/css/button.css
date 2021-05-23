@@ -9,6 +9,10 @@ button{
     margin: 5px;
 
 }
-button:hover{
+button:hover:enabled{
     background-color: rgb(86, 125, 196);
+}
+
+button:disabled{
+    background-color: #d4d1d1;
 }

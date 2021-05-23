@@ -1,5 +1,5 @@
 <template>
-    <button :type="type" @click="clickButton">{{ getButtonText }}</button>
+    <button :type="type" @click="clickButton" :disabled="buttonDisabled">{{ getButtonText }}</button>
 </template>
 
 <script>
@@ -14,6 +14,11 @@ export default {
             type: String,
             default: 'button',
         },
+        'buttonDisabled': {
+            type: Boolean,
+            required: true,
+            default: false,
+        }
     },
     computed: {
         getButtonText(){
