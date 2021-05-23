@@ -1,8 +1,8 @@
 <template>
     <label-component :for="inputName" :labelText="labelText"></label-component>
-    <text-input-component :name="inputName" :required="required" v-model="textInput"></text-input-component>
+    <text-input-component :name="inputName" :required="required" v-model="governmentInput"></text-input-component>
     <button-component :buttonText="buttonText" :type="buttonType" @clickButton="submitForm"></button-component>
-    <p>{{textInput}}</p>
+    <p>{{ responseText }}</p>
 </template>
 
 <script>
@@ -15,14 +15,15 @@ export default {
     methods: {
         submitForm(){
             const params = new URLSearchParams();
-            params.append('name', this.textInput);
+            params.append('name', this.governmentInput);
             const url = import.meta.env.VITE_APP_ADD_GOV;
             axios.post(url, params)
-                .then(function (response){
-                    console.log(response.data)
+                .then(response => {
+                    this.responseText = response.data;
+                    console.log(response.data);
                 })
-                .catch(function (error){
-                    console.log(error)
+                .catch(error => {
+                    this.responseText = 'Validation Failed: ' + error.response.data[0]
                 });
         }
     },
@@ -34,7 +35,8 @@ export default {
             buttonText: 'Add',
             inputType: 'text',
             required: true,
-            textInput: ''
+            governmentInput: '',
+            responseText: '',
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <input :inputType="inputType"  :required="required"  :name="name" v-model="textInput">
+    <input :inputType="inputType"  :required="required"  :name="name" v-model.trim="governmentInput">
 </template>
 
 <script>

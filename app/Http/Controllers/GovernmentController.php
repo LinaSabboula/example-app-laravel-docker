@@ -37,16 +37,23 @@ class GovernmentController extends Controller
      */
     public function store(Request $request)
     {
+//        TODO custom validation government names, dropdown list?
+        $errorMessages = [
+            'name.required' => 'Please provide a government',
+            'name.unique' => 'Government already exists!',
+        ];
         $validator = Validator::make($request->all(),[
         'name' => 'required|string|unique:governments,name',
-    ]);
+        ], $errorMessages);
+
         if ($validator -> fails()){
-            return response('Validation Failed', 400)
+            $errors = $validator->errors();
+            return response($errors->all(), 400)
                 ->header('Content-Type', 'text/plain');
         }
         else{
             try{
-                $government = Government::create([
+                Government::create([
                     'name' => $request->name,
                 ]);
             }
