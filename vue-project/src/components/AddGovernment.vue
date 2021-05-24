@@ -59,7 +59,11 @@ export default {
         },
         clearInput(){
             this.governmentInput = '';
-            this.$refs.inputField.governmentInput = '';
+            if(this.$refs.inputField){
+                if(this.$refs.inputField.governmentInput){
+                    this.$refs.inputField.governmentInput = '';
+                }
+            }
         },
         changeText(){
             this.responseText = '';
