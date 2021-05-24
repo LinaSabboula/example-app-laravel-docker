@@ -43,12 +43,12 @@ class GovernmentController extends Controller
             'name.unique' => 'Government already exists!',
         ];
         $validator = Validator::make($request->all(),[
-        'name' => 'required|string|unique:governments,name',
-        ], $errorMessages);
+                'name' => 'required|string|unique:governments,name',
+                ], $errorMessages);
 
         if ($validator -> fails()){
-            $errors = $validator->errors();
-            return response($errors->all(), 400)
+            $errors = $validator->errors()->first();
+            return response($errors, 400)
                 ->header('Content-Type', 'text/plain');
         }
         else{
