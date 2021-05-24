@@ -40,13 +40,15 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|alpha|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => array('required',
+                        'regex:/^([a-zA-Z0-9]+([\.\-\_][a-zA-Z0-9])*)+@[a-zA-Z0-9\-]+(\.[a-zA-Z]{2,})+$/',
+                        'unique:users,email'),
             'password' => 'required|min:8'
         ];
         $errorMessages = [
             'required' => 'Please fill all fields!',
             'name.alpha' => 'Name must not contain any non-alphabetic characters',
-            'email.email' => 'E-mail format not valid',
+            'email.regex' => 'E-mail format not valid',
             'email.unique' => 'You\'re already registered',
             'password.min' => 'Password must be at least 8 characters long'
         ];
