@@ -24,12 +24,8 @@
 </template>
 
 <script>
-import ButtonComponent from './ButtonComponent.vue'
-import LabelComponent from "./LabelComponent.vue";
-import TextInputComponent from "./TextInputComponent.vue"
 import axios from 'axios';
 export default {
-    components: { ButtonComponent, LabelComponent, TextInputComponent},
     methods: {
         submitForm(){
             this.changeLoadingScreen(true, true, true)
