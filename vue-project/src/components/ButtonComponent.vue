@@ -1,5 +1,9 @@
 <template>
-    <button :type="type" @click="clickButton" :disabled="buttonDisabled">{{ getButtonText }}</button>
+    <button :type="type"
+            @click="clickButton"
+            :disabled="buttonDisabled">
+            {{ getButtonText }}
+    </button>
 </template>
 
 <script>
