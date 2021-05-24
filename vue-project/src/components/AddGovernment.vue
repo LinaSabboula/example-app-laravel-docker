@@ -45,10 +45,8 @@ export default {
                 .catch(error => {
                     this.changeLoadingScreen();
                     this.responseText = 'Validation Failed';
-                    if(error.response !== null){
-                        if(error.response.data){
-                            this.responseText += ": " + error.response.data[0];
-                        }
+                    if(error.response && error.response.data){
+                        this.responseText += ": " + error.response.data[0];
                     }
                 });
         },
@@ -59,10 +57,10 @@ export default {
         },
         clearInput(){
             this.governmentInput = '';
-            if(this.$refs.inputField){
-                if(this.$refs.inputField.governmentInput){
-                    this.$refs.inputField.governmentInput = '';
-                }
+            if(this.$refs &&
+                this.$refs.inputField &&
+                this.$refs.inputField.governmentInput){
+                this.$refs.inputField.governmentInput = '';
             }
         },
         changeText(){
