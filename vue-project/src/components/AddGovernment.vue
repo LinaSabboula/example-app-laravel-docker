@@ -44,7 +44,12 @@ export default {
                 })
                 .catch(error => {
                     this.changeLoadingScreen();
-                    this.responseText = 'Validation Failed: ' + error.response.data[0];
+                    this.responseText = 'Validation Failed';
+                    if(error.response !== null){
+                        if(error.response.data){
+                            this.responseText += ": " + error.response.data[0];
+                        }
+                    }
                 });
         },
         changeLoadingScreen(loading=false, buttonDisabled=false, inputDisabled=false){
