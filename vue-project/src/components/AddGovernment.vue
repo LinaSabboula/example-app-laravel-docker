@@ -19,7 +19,11 @@
         :button-disabled="buttonDisabled"
         @clickButton="submitForm">
     </button-component>
-    <p v-if="loading">Please wait....</p>
+
+    <loading
+        :loading="loading">
+    </loading>
+
     <p>{{ responseText }}</p>
 </template>
 
