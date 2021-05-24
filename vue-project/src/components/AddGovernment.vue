@@ -33,20 +33,20 @@ export default {
     methods: {
         submitForm(){
             this.changeLoadingScreen(true, true, true)
-            const params = new URLSearchParams();
-            params.append('name', this.governmentInput);
             const url = import.meta.env.VITE_APP_ADD_GOV;
-            axios.post(url, params)
+            axios.post(url,{
+                name: this.governmentInput,
+            })
                 .then(response => {
                     this.changeLoadingScreen();
-                    this.responseText = response.data;
+                    this.responseText = response.data ? response.data : "Success";
                     this.clearInput();
                 })
                 .catch(error => {
                     this.changeLoadingScreen();
                     this.responseText = 'Validation Failed';
                     if(error.response && error.response.data){
-                        this.responseText += ": " + error.response.data[0];
+                        this.responseText += ": " + error.response.data;
                     }
                 });
         },
