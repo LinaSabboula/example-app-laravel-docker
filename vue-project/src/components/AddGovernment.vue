@@ -10,6 +10,7 @@
         :required="required"
         v-model.trim="governmentInput"
         @changeText="changeText"
+        @submitInput="submitForm"
         :input-disabled="inputDisabled">
     </text-input-component>
 
