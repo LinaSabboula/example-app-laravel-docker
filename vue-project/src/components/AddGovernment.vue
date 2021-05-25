@@ -10,13 +10,14 @@
         v-model.trim="governmentInput"
         @changeText="changeText"
         @submitInput="submitForm"
+        @newInput="validateGovernment"
         :input-disabled="inputDisabled">
     </text-input-component>
 
     <button-component
         :buttonText="buttonText"
         :type="buttonType"
-        :button-disabled="inputDisabled"
+        :button-disabled="buttonDisabled"
         @clickButton="submitForm">
     </button-component>
 
@@ -32,9 +33,17 @@ import axios from 'axios';
 import {isInputEmpty} from '../helpers/validations.js'
 export default {
     methods: {
-        isInputEmpty,
+        validateGovernment(){
+            if(isInputEmpty(this.governmentInput)) {
+                this.responseText = "Validation Failed: Please provide a government!";
+                this.buttonDisabled = true;
+            }
+            else{
+                this.buttonDisabled = false;
+            }
+        },
         submitForm(){
-            this.changeLoadingScreen(true,true);
+            this.changeLoadingScreen(true,true, true);
             if(isInputEmpty(this.governmentInput)){
                 this.responseText = "Validation Failed: Please provide a government!";
                 this.changeLoadingScreen();
@@ -61,9 +70,10 @@ export default {
                     }
                 });
         },
-        changeLoadingScreen(loading=false, inputDisabled=false){
+        changeLoadingScreen(loading=false, inputDisabled=false, buttonDisabled=false){
             this.loading = loading;
             this.inputDisabled = inputDisabled;
+            this.buttonDisabled = buttonDisabled;
         },
         clearInput(){
             this.governmentInput = '';
@@ -83,6 +93,7 @@ export default {
             governmentInput: '',
             responseText: '',
             inputDisabled: false,
+            buttonDisabled: false,
             loading: false,
         }
     }

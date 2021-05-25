@@ -6,6 +6,7 @@
         :disabled="inputDisabled"
         @keydown="$emit('changeText')"
         @keyup.enter="$emit('submitInput')"
+        @keyup="$emit('newInput')"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)">
 
@@ -16,7 +17,8 @@ export default {
     emits: [
         'changeText',
         'submitInput',
-        'update:modelValue'
+        'update:modelValue',
+        'newInput',
     ],
     props: {
         'modelValue':{
