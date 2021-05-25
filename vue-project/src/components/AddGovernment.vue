@@ -16,7 +16,7 @@
     <button-component
         :buttonText="buttonText"
         :type="buttonType"
-        :button-disabled="buttonDisabled"
+        :button-disabled="inputDisabled"
         @clickButton="submitForm">
     </button-component>
 
@@ -32,7 +32,7 @@ import axios from 'axios';
 export default {
     methods: {
         submitForm(){
-            this.changeLoadingScreen(true, true, true)
+            this.changeLoadingScreen(true,true)
             const url = import.meta.env.VITE_APP_ADD_GOV;
             axios.post(url,{
                 name: this.governmentInput,
@@ -50,9 +50,8 @@ export default {
                     }
                 });
         },
-        changeLoadingScreen(loading=false, buttonDisabled=false, inputDisabled=false){
+        changeLoadingScreen(loading=false, inputDisabled=false){
             this.loading = loading;
-            this.buttonDisabled = buttonDisabled;
             this.inputDisabled = inputDisabled;
         },
         clearInput(){
@@ -72,7 +71,6 @@ export default {
             required: true,
             governmentInput: '',
             responseText: '',
-            buttonDisabled: false,
             inputDisabled: false,
             loading: false,
         }
