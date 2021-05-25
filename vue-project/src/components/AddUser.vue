@@ -61,11 +61,12 @@
 
 <script>
 import axios from 'axios';
-import {isInputEmpty, isAlphabetic, isValidEmail, isSpecificLength} from '../helpers/validations.js'
+import {isInputEmpty, isAlphabetic, isValidEmail, isSpecificLength, makeSingleSpaced} from '../helpers/validations.js'
 export default {
     methods: {
         submitForm(){
             this.changeLoadingScreen(true, true);
+            this.nameInputText = makeSingleSpaced(this.nameInputText);
             console.log(this.nameInputText);
             if (isInputEmpty(this.nameInputText)||
                 isInputEmpty(this.emailInputText)||

@@ -12,6 +12,10 @@ export function isValidEmail(input){
     return regex.test(input);
 }
 
+export function makeSingleSpaced(input){
+    return input.replace(/\s\s+/g, ' ');
+}
+
 export function isSpecificLength(input, length){
     return input.length >= length;
 }
