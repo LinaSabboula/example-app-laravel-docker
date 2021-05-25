@@ -21,10 +21,6 @@ export default {
             type: Boolean,
             default: true,
         },
-        'showUser': {
-            type: Boolean,
-            default: false,
-        },
         'labelText': {
             type: String,
             default: 'User',
