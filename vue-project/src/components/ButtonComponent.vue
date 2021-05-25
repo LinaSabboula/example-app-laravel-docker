@@ -1,9 +1,16 @@
 <template>
-    <button :type="type" @click="clickButton" :disabled="buttonDisabled">{{ getButtonText }}</button>
+    <button :type="type"
+            @click="$emit('clickButton')"
+            :disabled="buttonDisabled">
+            {{ getButtonText }}
+    </button>
 </template>
 
 <script>
 export default {
+    emits: [
+        'clickButton'
+    ],
     props: {
         'buttonText': {
             type: String,
@@ -25,11 +32,6 @@ export default {
             return this.buttonText=== null ? 'OK' : this.buttonText
         }
     },
-    methods: {
-        clickButton(){
-            this.$emit("clickButton")
-        }
-    }
 }
 </script>
 

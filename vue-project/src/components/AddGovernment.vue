@@ -5,11 +5,12 @@
     </label-component>
 
     <text-input-component
-        ref="inputField"
         :name="inputName"
         :required="required"
         v-model.trim="governmentInput"
         @changeText="changeText"
+        @submitInput="submitForm"
+        @newInput="validateGovernment"
         :input-disabled="inputDisabled">
     </text-input-component>
 
@@ -29,41 +30,55 @@
 
 <script>
 import axios from 'axios';
+import {isInputEmpty} from '../helpers/validations.js'
 export default {
     methods: {
+        validateGovernment(){
+            if(isInputEmpty(this.governmentInput)) {
+                this.responseText = "Validation Failed: Please provide a government!";
+                this.buttonDisabled = true;
+            }
+            else{
+                this.buttonDisabled = false;
+            }
+        },
         submitForm(){
-            this.changeLoadingScreen(true, true, true)
-            const params = new URLSearchParams();
-            params.append('name', this.governmentInput);
+            this.changeLoadingScreen(true,true, true);
+            if(isInputEmpty(this.governmentInput)){
+                this.responseText = "Validation Failed: Please provide a government!";
+                this.changeLoadingScreen();
+            }
+            else{
+                this.submitRequest();
+            }
+        },
+        submitRequest(){
             const url = import.meta.env.VITE_APP_ADD_GOV;
-            axios.post(url, params)
+            axios.post(url,{
+                name: this.governmentInput,
+            })
                 .then(response => {
                     this.changeLoadingScreen();
-                    this.responseText = response.data;
+                    this.responseText = response.data ? response.data : "Success";
                     this.clearInput();
                 })
                 .catch(error => {
                     this.changeLoadingScreen();
                     this.responseText = 'Validation Failed';
                     if(error.response && error.response.data){
-                        this.responseText += ": " + error.response.data[0];
+                        this.responseText += ": " + error.response.data;
                     }
                 });
         },
-        changeLoadingScreen(loading=false, buttonDisabled=false, inputDisabled=false){
+        changeLoadingScreen(loading=false, inputDisabled=false, buttonDisabled=false){
             this.loading = loading;
-            this.buttonDisabled = buttonDisabled;
             this.inputDisabled = inputDisabled;
+            this.buttonDisabled = buttonDisabled;
         },
         clearInput(){
             this.governmentInput = '';
-            if(this.$refs &&
-                this.$refs.inputField &&
-                this.$refs.inputField.governmentInput){
-                this.$refs.inputField.governmentInput = '';
-            }
         },
-        changeText(){
+        changeText() {
             this.responseText = '';
         }
     },
@@ -77,8 +92,8 @@ export default {
             required: true,
             governmentInput: '',
             responseText: '',
-            buttonDisabled: false,
             inputDisabled: false,
+            buttonDisabled: false,
             loading: false,
         }
     }

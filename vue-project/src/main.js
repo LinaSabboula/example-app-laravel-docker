@@ -5,6 +5,9 @@ import ButtonComponent from "./components/ButtonComponent.vue";
 import LabelComponent from "./components/LabelComponent.vue";
 import TextInputComponent from "./components/TextInputComponent.vue";
 import Loading from "./components/Loading.vue";
+import ToggleComponent from "./components/ToggleComponent.vue";
+import AddUser from "./components/AddUser.vue";
+
 
 const app = createApp(App)
 app.component('add-government', AddGovernment);
@@ -12,5 +15,8 @@ app.component('label-component', LabelComponent);
 app.component('button-component', ButtonComponent);
 app.component('text-input-component', TextInputComponent);
 app.component('loading', Loading);
+app.component('toggle-component', ToggleComponent);
+app.component('add-user', AddUser);
+
 app.mount('#app');
 

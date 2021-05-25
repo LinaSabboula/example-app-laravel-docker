@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GovernmentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AddressController;
@@ -20,6 +21,7 @@ Route::middleware(['cors'])->group(function () {
     Route::post('/add-government', [GovernmentController::class, 'store']);
     Route::get('/addresses/user/{id}', [AddressController::class, 'showUserAddresses', '{id}']);
     Route::post('/addresses', [AddressController::class, 'store']);
+    Route::post('/add-user', [UserController::class, 'store']);
 });
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

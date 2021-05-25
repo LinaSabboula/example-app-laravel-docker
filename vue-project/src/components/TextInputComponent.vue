@@ -1,16 +1,29 @@
 <template>
     <input
-        :inputType="inputType"
+        :type="inputType"
         :required="required"
         :name="name"
         :disabled="inputDisabled"
-        @keydown="changeText"
-        v-model="governmentInput">
+        @keydown="$emit('changeText')"
+        @keyup.enter="$emit('submitInput')"
+        @keyup="$emit('newInput')"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)">
+
 </template>
 
 <script>
 export default {
+    emits: [
+        'changeText',
+        'submitInput',
+        'update:modelValue',
+        'newInput',
+    ],
     props: {
+        'modelValue':{
+            type: String
+        },
         'name': {
             type: String,
         },
@@ -28,10 +41,5 @@ export default {
             default: false,
         },
     },
-    methods: {
-        changeText(){
-            this.$emit("changeText");
-        }
-    }
 }
 </script>

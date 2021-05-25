@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Government;
-use Exception;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Exception;
 
-class GovernmentController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -37,42 +38,55 @@ class GovernmentController extends Controller
      */
     public function store(Request $request)
     {
-//        TODO custom validation government names, dropdown list?
-        $errorMessages = [
-            'name.required' => 'Please provide a government',
-            'name.unique' => 'Government already exists!',
+        $rules = [
+            'name' => array(
+                        'required',
+                        'regex:/^[a-zA-Z\s]+$/',
+                        'string'),
+            'email' => array(
+                        'required',
+                        'regex:/^([a-zA-Z0-9]+([\.\-\_][a-zA-Z0-9])*)+@[a-zA-Z0-9]+([\-\.][a-zA-Z0-9]+)*(\.[a-zA-Z]{2,})+$/',
+                        'unique:users,email'),
+            'password' => 'required|min:8'
         ];
-        $validator = Validator::make($request->all(),[
-                'name' => 'required|string|unique:governments,name',
-                ], $errorMessages);
+        $errorMessages = [
+            'required' => 'Please fill all fields!',
+            'name.alpha' => 'Name must not contain any non-alphabetic characters',
+            'email.regex' => 'E-mail format not valid',
+            'email.unique' => 'You\'re already registered',
+            'password.min' => 'Password must be at least 8 characters long'
+        ];
+        $validator = Validator::make($request->all(), $rules, $errorMessages);
 
-        if ($validator -> fails()){
+        if($validator -> fails()){
             $errors = $validator->errors()->first();
             return response($errors, 400)
                 ->header('Content-Type', 'text/plain');
         }
         else{
             try{
-                Government::create([
+                User::create([
                     'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
                 ]);
             }
-            catch(Exception $e){
+            catch (Exception $e){
                 return response($e->getMessage(), 400)
                     ->header('Content-Type', 'text/plain');
             }
-            return response("New government entry [".$request->name ."] was created ", 200)
-                            ->header('Content-Type', 'text/plain');
+            return response("New user entry [".$request->email ."] was created ", 200)
+                ->header('Content-Type', 'text/plain');
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Government  $government
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Government $government)
+    public function show(User $user)
     {
         //
     }
@@ -80,10 +94,10 @@ class GovernmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Government  $government
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Government $government)
+    public function edit(User $user)
     {
         //
     }
@@ -92,10 +106,10 @@ class GovernmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Government  $government
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Government $government)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -103,10 +117,10 @@ class GovernmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Government  $government
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Government $government)
+    public function destroy(User $user)
     {
         //
     }
