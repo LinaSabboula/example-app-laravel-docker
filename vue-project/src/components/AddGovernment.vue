@@ -24,7 +24,13 @@
     <loading
         :loading="loading">
     </loading>
-
+    <div>
+        <counter-component
+            :countValue="govCount"
+            userCountText='Current government count: '
+            labelFor="govCount">
+        </counter-component>
+    </div>
     <p>{{ responseText }}</p>
 </template>
 
@@ -32,6 +38,9 @@
 import axios from 'axios';
 import {isInputEmpty} from '../helpers/validations.js'
 export default {
+    mounted(){
+        this.getGovernmentCount();
+    },
     methods: {
         validateGovernment(){
             if(isInputEmpty(this.governmentInput)) {
@@ -60,6 +69,7 @@ export default {
                 .then(response => {
                     this.changeLoadingScreen();
                     this.responseText = response.data ? response.data : "Success";
+                    this.govCount += 1;
                     this.clearInput();
                 })
                 .catch(error => {
@@ -80,7 +90,18 @@ export default {
         },
         changeText() {
             this.responseText = '';
-        }
+        },
+        async getGovernmentCount() {
+            const url = import.meta.env.VITE_APP_GOV_COUNT;
+            try {
+                const response = await axios.get(url);
+                if(response.data) {
+                    this.govCount = response.data;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
     },
     data(){
         return{
@@ -95,7 +116,9 @@ export default {
             inputDisabled: false,
             buttonDisabled: false,
             loading: false,
+            govCount: 0,
         }
-    }
+    },
+
 }
 </script>

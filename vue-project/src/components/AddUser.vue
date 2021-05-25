@@ -57,6 +57,13 @@
             :loading="loading">
         </loading>
 
+        <div>
+            <counter-component
+                :countValue="userCount"
+                userCountText="Current user count: "
+                labelFor="userCount">
+            </counter-component>
+        </div>
         <p>{{ responseText }}</p>
     </div>
 </template>
