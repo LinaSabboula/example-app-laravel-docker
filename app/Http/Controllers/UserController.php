@@ -39,9 +39,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|alpha|string',
-            'email' => array('required',
-                        'regex:/^([a-zA-Z0-9]+([\.\-\_][a-zA-Z0-9])*)+@[a-zA-Z0-9\-]+(\.[a-zA-Z]{2,})+$/',
+            'name' => array(
+                        'required',
+                        'regex:/^[a-zA-Z\s]+$/',
+                        'string'),
+            'email' => array(
+                        'required',
+                        'regex:/^([a-zA-Z0-9]+([\.\-\_][a-zA-Z0-9])*)+@[a-zA-Z0-9]+([\-\.][a-zA-Z0-9]+)*(\.[a-zA-Z]{2,})+$/',
                         'unique:users,email'),
             'password' => 'required|min:8'
         ];
