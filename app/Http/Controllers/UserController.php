@@ -35,7 +35,7 @@ class UserController extends Controller
      * Get count of `users`
      * @return \Illuminate\Http\Response
      */
-    public function getUserCount(){
+    public function getCount(){
         try {
             $count = DB::table('users')->count();
         }
