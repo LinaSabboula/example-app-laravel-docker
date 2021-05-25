@@ -5,7 +5,6 @@
     </label-component>
 
     <text-input-component
-        ref="inputField"
         :name="inputName"
         :required="required"
         v-model.trim="governmentInput"
@@ -58,11 +57,6 @@ export default {
         },
         clearInput(){
             this.governmentInput = '';
-            if(this.$refs &&
-                this.$refs.inputField &&
-                this.$refs.inputField.governmentInput){
-                this.$refs.inputField.governmentInput = '';
-            }
         },
         changeText(){
             this.responseText = '';
