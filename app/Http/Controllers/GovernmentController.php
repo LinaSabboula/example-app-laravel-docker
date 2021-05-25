@@ -17,7 +17,9 @@ class GovernmentController extends Controller
      */
     public function index()
     {
-        //
+        $governments = Government::all('name');
+        return response($governments, 200)
+            ->header('Content-Type', 'application/json');
     }
 
     /**
