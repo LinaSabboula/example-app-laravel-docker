@@ -7,6 +7,7 @@ export default {
     props: {
         'inputName': {
             type: String,
+            default: 'label',
         },
         'labelText': {
             type: String,
