@@ -61,31 +61,60 @@
 
 <script>
 import axios from 'axios';
+import {isInputEmpty, isAlphabetic, isValidEmail, isSpecificLength} from '../helpers/validations.js'
 export default {
     methods: {
         submitForm(){
             this.changeLoadingScreen(true, true);
+            console.log(this.nameInputText);
+            if (isInputEmpty(this.nameInputText)||
+                isInputEmpty(this.emailInputText)||
+                isInputEmpty(this.passwordInputText)){
+                this.responseText = "Validation Failed: Please fill all fields!";
+                this.clearPasswordInput();
+                this.changeLoadingScreen();
+            }
+            else if(!isAlphabetic(this.nameInputText)){
+                this.responseText = "Validation Failed: Name must not contain any non-alphabetic characters"
+                this.clearPasswordInput();
+                this.changeLoadingScreen();
+            }
+            else if(!isValidEmail(this.emailInputText)){
+                this.responseText = "Validation Failed: E-mail format not valid";
+                this.clearPasswordInput();
+                this.changeLoadingScreen();
+            }
+            else if(!isSpecificLength(this.passwordInputText, this.minPasswordLength = 8)){
+                this.responseText = "Validation Failed: Password must be at least 8 characters long";
+                this.clearPasswordInput();
+                this.changeLoadingScreen();
+            }
+            else{
+                this.submitRequest();
+            }
+
+        },
+        submitRequest(){
             const url = import.meta.env.VITE_APP_ADD_USER;
             axios.post(url, {
                 name: this.nameInputText,
                 email: this.emailInputText,
                 password: this.passwordInputText,
             })
-            .then(response => {
-                this.changeLoadingScreen();
-                this.responseText = response.data ? response.data : "Success";
-                this.clearAllInputs();
-            })
-            .catch(error =>{
-                this.changeLoadingScreen();
-                this.clearPasswordInput();
-                this.responseText = 'Validation Failed';
-                console.log(error.response.data)
-                if(error.response && error.response.data){
-                    this.responseText += ": " + error.response.data;
-                }
-            })
-
+                .then(response => {
+                    this.changeLoadingScreen();
+                    this.responseText = response.data ? response.data : "Success";
+                    this.clearAllInputs();
+                })
+                .catch(error =>{
+                    this.changeLoadingScreen();
+                    this.clearPasswordInput();
+                    this.responseText = 'Validation Failed';
+                    console.log(error.response.data)
+                    if(error.response && error.response.data){
+                        this.responseText += ": " + error.response.data;
+                    }
+                });
         },
         clearAllInputs(){
             this.clearNameInput();
@@ -126,6 +155,7 @@ export default {
             requiredPassword: true,
             passwordLabel: 'Password: ',
             passwordInputText: '',
+            minPasswordLength: 8,
 
             buttonText: 'Add',
             buttonType: 'submit',

@@ -29,10 +29,21 @@
 
 <script>
 import axios from 'axios';
+import {isInputEmpty} from '../helpers/validations.js'
 export default {
     methods: {
+        isInputEmpty,
         submitForm(){
-            this.changeLoadingScreen(true,true)
+            this.changeLoadingScreen(true,true);
+            if(isInputEmpty(this.governmentInput)){
+                this.responseText = "Validation Failed: Please provide a government!";
+                this.changeLoadingScreen();
+            }
+            else{
+                this.submitRequest();
+            }
+        },
+        submitRequest(){
             const url = import.meta.env.VITE_APP_ADD_GOV;
             axios.post(url,{
                 name: this.governmentInput,
@@ -57,7 +68,7 @@ export default {
         clearInput(){
             this.governmentInput = '';
         },
-        changeText(){
+        changeText() {
             this.responseText = '';
         }
     },
