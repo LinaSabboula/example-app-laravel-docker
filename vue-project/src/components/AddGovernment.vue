@@ -32,16 +32,46 @@
         </counter-component>
     </div>
     <p>{{ responseText }}</p>
+    <dropdown-list-component
+        :items="govList"
+        label-text="Governments: "
+        input-name="gov-list"
+        v-model="selectedGovID">
+    </dropdown-list-component>
+
+    <button-component
+        v-if="selectedGovID"
+        button-text="Delete"
+        type="submit"
+        :button-disabled=false
+        @click-button="deleteGov">
+    </button-component>
+
+
+
+    <span>{{ selectedGovID }}</span>
 </template>
 
 <script>
 import axios from 'axios';
 import {isInputEmpty} from '../helpers/validations.js'
 export default {
+    name: 'AddGovernment',
     mounted(){
         this.getGovernmentCount();
+        this.populateList();
     },
     methods: {
+        deleteGov(){
+            // item id does not match item index in list
+            for(let i = 0; i < this.govList.length; i++){
+                if(this.govList[i].id === Number(this.selectedGovID)){
+                    this.govList.splice(i, 1);
+                    this.selectedGovID = null;
+                    break;
+                }
+            }
+        },
         validateGovernment(){
             if(isInputEmpty(this.governmentInput)) {
                 this.responseText = "Validation Failed: Please provide a government!";
@@ -102,6 +132,20 @@ export default {
                 console.error(error);
             }
         },
+        async populateList(){
+            const url = import.meta.env.VITE_APP_GET_ALL_GOVS;
+            try {
+                const response = await axios.get(url);
+                if(response.data) {
+                    for (let gov of response.data){
+                        this.govList.push(gov);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+
+        }
     },
     data(){
         return{
@@ -117,6 +161,8 @@ export default {
             buttonDisabled: false,
             loading: false,
             govCount: 0,
+            govList: [],
+            selectedGovID: null,
         }
     },
 
