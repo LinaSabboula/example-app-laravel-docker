@@ -138,7 +138,7 @@ export default {
                 .then(response => {
                     this.changeLoadingScreen();
                     this.responseText = response.data ? response.data : "Success";
-                    this.userCount += 1;
+                    this.getUserCount();
                     this.clearAllInputs();
                 })
                 .catch(error =>{
