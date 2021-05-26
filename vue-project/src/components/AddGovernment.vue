@@ -44,13 +44,9 @@
         v-if="selectedGovID"
         button-text="Delete"
         type="submit"
-        :button-disabled=false
+        :button-disabled="buttonDisabled"
         @click-button="deleteGov">
     </button-component>
-
-
-
-    <span>{{ selectedGovID }}</span>
 </template>
 
 <script>
@@ -64,14 +60,32 @@ export default {
     },
     methods: {
         deleteGov(){
-            // item id does not match item index in list
-            for(let i = 0; i < this.govList.length; i++){
-                if(this.govList[i].id === Number(this.selectedGovID)){
-                    this.govList.splice(i, 1);
-                    this.selectedGovID = null;
-                    break;
-                }
+            this.changeLoadingScreen(true,true, true);
+            // ensure that `selectedGovID` is set
+            if(isInputEmpty(this.selectedGovID)){
+                this.responseText = "Validation Failed: Please provide a government!";
+                this.changeLoadingScreen();
             }
+            else{
+                this.deleteRequest();
+            }
+        },
+        deleteRequest(){
+            const url = import.meta.env.VITE_APP_DELETE_GOV;
+            axios.delete(url+this.selectedGovID)
+                .then(response => {
+                    this.changeLoadingScreen();
+                    this.responseText = response.data ? response.data : "Success";
+                    this.getGovernmentCount();
+                    this.populateList();
+                })
+                .catch(error => {
+                    this.changeLoadingScreen();
+                    this.responseText = 'Validation Failed';
+                    if (error.response && error.response.data) {
+                        this.responseText += ": " + error.response.data;
+                    }
+                });
         },
         validateGovernment(){
             if(isInputEmpty(this.governmentInput)) {
@@ -100,7 +114,8 @@ export default {
                 .then(response => {
                     this.changeLoadingScreen();
                     this.responseText = response.data ? response.data : "Success";
-                    this.govCount += 1;
+                    this.getGovernmentCount();
+                    this.populateList();
                     this.clearInput();
                 })
                 .catch(error => {
@@ -138,6 +153,8 @@ export default {
             try {
                 const response = await axios.get(url);
                 if(response.data) {
+                    this.govList = [];
+                    this.selectedGovID = null;
                     for (let gov of response.data){
                         this.govList.push(gov);
                     }
@@ -145,8 +162,8 @@ export default {
             } catch (error) {
                 console.error(error);
             }
+        },
 
-        }
     },
     data(){
         return{
