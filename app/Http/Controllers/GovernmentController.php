@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\Government;
 use Exception;
 use Illuminate\Http\Request;
@@ -46,6 +47,46 @@ class GovernmentController extends Controller
         }
         return response($count, 200)
             ->header('Content-Type', 'text/plain');
+    }
+
+    /**
+     * Delete a specified government if it is not a foreign key in `cities` table
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id){
+        $rules = [
+            'id' => [
+                'exists:governments,id',
+                function($attribute, $id, $fails){
+                    $cities = City::where('government_id', $id)->get();
+                    if(sizeof($cities) > 0){
+                        $fails("Cannot delete government in use!");
+                    }
+
+                }
+            ],
+        ];
+        $errorMessages = [
+            'id.exists' => "Government does not exist!",
+        ];
+        $validator = Validator::make(['id' => $id], $rules, $errorMessages);
+        if ($validator->fails()){
+            $errors = $validator->errors()->first();
+            return response($errors, 400)
+                ->header('Content-Type', 'text/plain');
+        }
+        else{
+            try{
+                Government::find($id)->delete();
+            }
+            catch(Exception $e){
+                return response($e->getMessage(), 400)
+                    ->header('Content-Type', 'text/plain');
+            }
+            return response("Successfully deleted government", 200)
+                ->header('Content-Type', 'text/plain');
+        }
     }
     /**
      * Store a newly created resource in storage.
