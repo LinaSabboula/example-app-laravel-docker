@@ -36,7 +36,8 @@
         :items="govList"
         label-text="Governments: "
         input-name="gov-list"
-        v-model="selectedGovID">
+        v-model="selectedGovID"
+        @change-text="changeText">
     </dropdown-list-component>
 
     <button-component

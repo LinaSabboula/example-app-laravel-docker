@@ -2,6 +2,7 @@
     <label-component :label-text="labelText"></label-component>
     <select name="labelText"
             :value="modelValue"
+            @change="$emit('changeText')"
             @input="$emit('update:modelValue', $event.target.value)">
         <option value="" disabled selected>
             Select your option
@@ -19,6 +20,10 @@
 
 export default {
     name: "dropdownListComponent",
+    emits: [
+        'changeText',
+        'update:modelValue',
+    ],
     props: {
         'placeholderValue': {
             String,
