@@ -18,7 +18,9 @@ class GovernmentController extends Controller
      */
     public function index()
     {
-        $governments = Government::all('id', 'name');
+        $governments = Government::select('id', 'name')
+                        ->orderBy('created_at')
+                        ->get();
         return response($governments, 200)
             ->header('Content-Type', 'application/json');
     }
