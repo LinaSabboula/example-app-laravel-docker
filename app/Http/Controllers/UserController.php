@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use PHPUnit\Exception;
@@ -30,6 +31,21 @@ class UserController extends Controller
         //
     }
 
+    /**
+     * Get count of `users`
+     * @return \Illuminate\Http\Response
+     */
+    public function getCount(){
+        try {
+            $count = DB::table('users')->count();
+        }
+        catch (Exception $e){
+            return response($e->getMessage(), 400)
+                ->header('Content-Type', 'text/plain');
+        }
+        return response($count, 200)
+            ->header('Content-Type', 'text/plain');
+    }
     /**
      * Store a newly created resource in storage.
      *

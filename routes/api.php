@@ -22,6 +22,10 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/addresses/user/{id}', [AddressController::class, 'showUserAddresses', '{id}']);
     Route::post('/addresses', [AddressController::class, 'store']);
     Route::post('/add-user', [UserController::class, 'store']);
+    Route::get('/count-users', [UserController::class, 'getCount']);
+    Route::get('/count-governments', [GovernmentController::class, 'getCount']);
+    Route::get('/get-governments', [GovernmentController::class, 'index']);
+    Route::delete('/delete-government/{id}', [GovernmentController::class, 'delete', '{id}']);
 });
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

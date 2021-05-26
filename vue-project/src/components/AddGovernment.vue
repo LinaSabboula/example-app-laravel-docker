@@ -24,15 +24,69 @@
     <loading
         :loading="loading">
     </loading>
-
+    <div>
+        <counter-component
+            :countValue="govCount"
+            userCountText='Current government count: '
+            labelFor="govCount">
+        </counter-component>
+    </div>
     <p>{{ responseText }}</p>
+    <dropdown-list-component
+        :items="govList"
+        label-text="Governments: "
+        input-name="gov-list"
+        v-model="selectedGovID"
+        @change-text="changeText">
+    </dropdown-list-component>
+
+    <button-component
+        v-if="selectedGovID"
+        button-text="Delete"
+        type="submit"
+        :button-disabled="buttonDisabled"
+        @click-button="deleteGov">
+    </button-component>
 </template>
 
 <script>
 import axios from 'axios';
 import {isInputEmpty} from '../helpers/validations.js'
 export default {
+    name: 'AddGovernment',
+    mounted(){
+        this.getGovernmentCount();
+        this.populateList();
+    },
     methods: {
+        deleteGov(){
+            this.changeLoadingScreen(true,true, true);
+            // ensure that `selectedGovID` is set
+            if(isInputEmpty(this.selectedGovID)){
+                this.responseText = "Validation Failed: Please provide a government!";
+                this.changeLoadingScreen();
+            }
+            else{
+                this.deleteRequest();
+            }
+        },
+        deleteRequest(){
+            const url = import.meta.env.VITE_APP_DELETE_GOV;
+            axios.delete(url+this.selectedGovID)
+                .then(response => {
+                    this.changeLoadingScreen();
+                    this.responseText = response.data ? response.data : "Success";
+                    this.getGovernmentCount();
+                    this.populateList();
+                })
+                .catch(error => {
+                    this.changeLoadingScreen();
+                    this.responseText = 'Validation Failed';
+                    if (error.response && error.response.data) {
+                        this.responseText += ": " + error.response.data;
+                    }
+                });
+        },
         validateGovernment(){
             if(isInputEmpty(this.governmentInput)) {
                 this.responseText = "Validation Failed: Please provide a government!";
@@ -60,6 +114,8 @@ export default {
                 .then(response => {
                     this.changeLoadingScreen();
                     this.responseText = response.data ? response.data : "Success";
+                    this.getGovernmentCount();
+                    this.populateList();
                     this.clearInput();
                 })
                 .catch(error => {
@@ -80,7 +136,34 @@ export default {
         },
         changeText() {
             this.responseText = '';
-        }
+        },
+        async getGovernmentCount() {
+            const url = import.meta.env.VITE_APP_GOV_COUNT;
+            try {
+                const response = await axios.get(url);
+                if(response.data) {
+                    this.govCount = response.data;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async populateList(){
+            const url = import.meta.env.VITE_APP_GET_ALL_GOVS;
+            try {
+                const response = await axios.get(url);
+                if(response.data) {
+                    this.govList = [];
+                    this.selectedGovID = null;
+                    for (let gov of response.data){
+                        this.govList.push(gov);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+
     },
     data(){
         return{
@@ -95,7 +178,11 @@ export default {
             inputDisabled: false,
             buttonDisabled: false,
             loading: false,
+            govCount: 0,
+            govList: [],
+            selectedGovID: null,
         }
-    }
+    },
+
 }
 </script>

@@ -2,7 +2,7 @@
     <div class="user-input">
         <label-component
             :for="nameInput"
-            :label-text="nameLabel">
+            :labelText="nameLabel">
         </label-component>
 
         <text-input-component
@@ -17,7 +17,7 @@
 
         <label-component
             :for="emailInput"
-            :label-text="emailLabel">
+            :labelText="emailLabel">
         </label-component>
 
         <text-input-component
@@ -32,7 +32,7 @@
 
         <label-component
             :for="passwordInput"
-            :label-text="passwordLabel">
+            :labelText="passwordLabel">
         </label-component>
 
         <text-input-component
@@ -57,15 +57,25 @@
             :loading="loading">
         </loading>
 
+        <div>
+            <counter-component
+                :countValue="userCount"
+                userCountText="Current user count: "
+                labelFor="userCount">
+            </counter-component>
+        </div>
         <p>{{ responseText }}</p>
     </div>
-
 </template>
 
 <script>
 import axios from 'axios';
-import {isInputEmpty, isAlphabetic, isValidEmail, isSpecificLength, makeSingleSpaced} from '../helpers/validations.js'
+import {isAlphabetic, isInputEmpty, isSpecificLength, isValidEmail, makeSingleSpaced} from '../helpers/validations.js'
+
 export default {
+    mounted() {
+        this.getUserCount()
+    },
     methods: {
         validateName(){
             if(isInputEmpty(this.nameInputText)){
@@ -128,13 +138,13 @@ export default {
                 .then(response => {
                     this.changeLoadingScreen();
                     this.responseText = response.data ? response.data : "Success";
+                    this.getUserCount();
                     this.clearAllInputs();
                 })
                 .catch(error =>{
                     this.changeLoadingScreen();
                     this.clearPasswordInput();
                     this.responseText = 'Validation Failed';
-                    console.log(error.response.data)
                     if(error.response && error.response.data){
                         this.responseText += ": " + error.response.data;
                     }
@@ -162,6 +172,17 @@ export default {
             this.inputDisabled = inputDisabled;
             this.buttonDisabled = isButtonDisabled;
         },
+        async getUserCount(){
+            const url = import.meta.env.VITE_APP_USER_COUNT;
+            try {
+                const response = await axios.get(url);
+                if(response.data) {
+                    this.userCount = response.data;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
     },
     data() {
         return{
@@ -191,6 +212,8 @@ export default {
             responseText: '',
 
             inputDisabled: false,
+
+            userCount: 0,
         }
     },
 }
