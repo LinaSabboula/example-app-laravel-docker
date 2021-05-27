@@ -1,5 +1,6 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
+import store from './store/index'
 import AddGovernment from "./components/AddGovernment.vue";
 import ButtonComponent from "./components/ButtonComponent.vue";
 import LabelComponent from "./components/LabelComponent.vue";
@@ -11,6 +12,7 @@ import CounterComponent from "./components/CounterComponent.vue";
 import dropdownListComponent from "./components/dropdownListComponent.vue";
 
 const app = createApp(App)
+app.use(store);
 app.component('add-government', AddGovernment);
 app.component('label-component', LabelComponent);
 app.component('button-component', ButtonComponent);
@@ -20,6 +22,5 @@ app.component('toggle-component', ToggleComponent);
 app.component('add-user', AddUser);
 app.component('counter-component', CounterComponent);
 app.component('dropdown-list-component', dropdownListComponent);
-
 app.mount('#app');
 

@@ -1,9 +1,12 @@
 <template>
-    <label-component :label-text="labelText"></label-component>
-    <select name="labelText"
-            :value="modelValue"
+    <label-component
+        :for=inputName
+        :label-text="labelText">
+    </label-component>
+    <select :name=inputName
+            :value="value"
             @change="$emit('changeText')"
-            @input="$emit('update:modelValue', $event.target.value)">
+            @input="$emit('update:value', $event.target.value)">
         <option value="" disabled selected>
             Select your option
         </option>
@@ -22,24 +25,24 @@ export default {
     name: "dropdownListComponent",
     emits: [
         'changeText',
-        'update:modelValue',
+        'update:value',
     ],
     props: {
-        'placeholderValue': {
+        placeholderValue: {
             String,
         },
-        'modelValue':{
+        value:{
             type: String
         },
-        'items': {
+        items: {
             type: Array,
             required: true,
             default: [],
         },
-        'labelText': {
+        labelText: {
             type: String,
         },
-        'inputName': {
+        inputName: {
             type: String,
         }
     },

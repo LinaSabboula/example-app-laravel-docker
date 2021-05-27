@@ -1,14 +1,14 @@
 <template>
     <input
-        :type="inputType"
-        :required="required"
-        :name="name"
         :disabled="inputDisabled"
+        :name="name"
+        :required="required"
+        :type="inputType"
+        :value="value"
+        @input="$emit('update:value', $event.target.value)"
         @keydown="$emit('changeText')"
-        @keyup.enter="$emit('submitInput')"
         @keyup="$emit('newInput')"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)">
+        @keyup.enter="$emit('submitInput')">
 
 </template>
 
@@ -17,25 +17,25 @@ export default {
     emits: [
         'changeText',
         'submitInput',
-        'update:modelValue',
+        'update:value',
         'newInput',
     ],
     props: {
-        'modelValue':{
+        value: {
             type: String
         },
-        'name': {
+        name: {
             type: String,
         },
-        'required': {
+        required: {
             type: Boolean,
             required: true,
         },
-        'inputType': {
+        inputType: {
             type: String,
             default: 'text',
         },
-        'inputDisabled': {
+        inputDisabled: {
             type: Boolean,
             required: true,
             default: false,
