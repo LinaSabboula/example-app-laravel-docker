@@ -65,15 +65,6 @@ const store = createStore({
             state.selectedGovernment = null;
         }
     },
-    actions: {
-        //App.vue
-        toggleViewState(context){
-            context.commit('toggleViewState');
-        },
-        toggleViewLabel(context){
-            context.commit('toggleViewLabel');
-        }
-    },
 });
 
 export default store;
