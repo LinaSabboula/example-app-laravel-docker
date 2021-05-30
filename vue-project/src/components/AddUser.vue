@@ -63,8 +63,8 @@
         <div>
             <counter-component
                 :countValue=userCount
-                labelFor="userCount"
-                user-count-text="Current user count: ">
+                label-for="userCount"
+                count-text="Current user count: ">
             </counter-component>
         </div>
         <p>{{ userResponseText }}</p>
