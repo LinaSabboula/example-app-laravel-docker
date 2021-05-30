@@ -7,9 +7,9 @@
             </label-component>
 
             <text-input-component
-                :input-disabled=userInputDisabled
+                :input-disabled=this.userInputDisabled
                 :required=true
-                :value=userNameInput
+                :value=this.userNameInput
                 name="nameInput"
                 @update:value=changeNameInput
                 @change-text=changeText
@@ -25,9 +25,9 @@
             </label-component>
 
             <text-input-component
-                :input-disabled=userInputDisabled
+                :input-disabled=this.userInputDisabled
                 :required=true
-                :value=userEmailInput
+                :value=this.userEmailInput
                 name="emailInput"
                 @update:value=changeEmailInput
                 @change-text=changeText
@@ -43,9 +43,9 @@
             </label-component>
 
             <text-input-component
-                :input-disabled=userInputDisabled
+                :input-disabled=this.userInputDisabled
                 :required=true
-                :value=userPasswordInput
+                :value=this.userPasswordInput
                 input-type="password"
                 name="passwordInput"
                 @update:value=changePasswordInput
@@ -57,7 +57,7 @@
 
         <div class="item">
             <button-component
-                :button-disabled=userButtonDisabled
+                :button-disabled=this.userButtonDisabled
                 button-text="Add"
                 type="submit"
                 @click-button=submitForm>
@@ -65,17 +65,17 @@
         </div>
         <div class="item">
             <loading
-                :loading=userLoading>
+                :loading=this.userLoading>
             </loading>
         </div>
         <div class="counter item">
             <counter-component
-                :countValue=userCount
+                :countValue=this.userCount
                 count-text="Current user count: "
                 label-for="userCount">
             </counter-component>
         </div>
-        <p class="response item">{{ userResponseText }}</p>
+        <p class="response item">{{ this.userResponseText }}</p>
     </div>
 </template>
 
@@ -129,7 +129,7 @@ export default {
             let validationText = '';
             if (isInputEmpty(this.userNameInput)) {
                 validationText = "Validation Failed: Please fill all fields!";
-                this.buttonDisabled = true;
+                this.toggleUserButton(true);
             } else if (!isAlphabetic(this.userNameInput)) {
                 validationText = "Validation Failed: Name must not contain any non-alphabetic characters";
                 this.toggleUserButton(true);
@@ -156,7 +156,7 @@ export default {
             if (isInputEmpty(this.userPasswordInput)) {
                 validationText = "Validation Failed: Please fill all fields!";
                 this.toggleUserButton(true);
-            } else if (!isSpecificLength(this.userPasswordInput, this.minPasswordLength = 9)) {
+            } else if (!isSpecificLength(this.userPasswordInput, this.minPasswordLength = 8)) {
                 validationText = "Validation Failed: Password must be at least " + this.minPasswordLength + " characters long";
                 this.toggleUserButton(true);
             } else {
