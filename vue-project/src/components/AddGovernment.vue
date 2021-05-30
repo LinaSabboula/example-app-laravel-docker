@@ -1,57 +1,65 @@
 <template>
-    <label-component
-        :label-for=inputName
-        labelText='Government: '>
-    </label-component>
+    <div class="container">
+        <div class="item">
+            <label-component
+                label-for="gov-name"
+                labelText='Government: '>
+            </label-component>
 
-    <text-input-component
-        :input-disabled=this.governmentInputDisabled
-        :name=inputName
-        :required=inputRequired
-        :value=this.governmentInput
-        @change-text=clearResponseText
-        @new-input=validateGovernment
-        @submit-input=submitForm
-        @update:value=changeTextInput>
-    </text-input-component>
+            <text-input-component
+                :input-disabled=this.governmentInputDisabled
+                :required=true
+                :value=this.governmentInput
+                name="gov-name"
+                @change-text=clearResponseText
+                @new-input=validateGovernment
+                @submit-input=submitForm
+                @update:value=changeTextInput>
+            </text-input-component>
+        </div>
+        <div class="item">
+            <button-component
+                :button-disabled=this.governmentButtonDisabled
+                button-text="Add"
+                type="submit"
+                @click-button=submitForm>
+            </button-component>
+        </div>
+        <div class="item">
+            <loading
+                :loading=this.governmentLoading>
+            </loading>
+        </div>
+        <div class="item counter">
+            <counter-component
+                :count-value=this.governmentCount
+                count-text='Current government count: '
+                label-for="govCount">
+            </counter-component>
+        </div>
 
-    <button-component
-        :button-disabled=this.governmentButtonDisabled
-        button-text="Add"
-        type="submit"
-        @click-button=submitForm>
-    </button-component>
+        <p class="item response">{{ this.governmentResponseText }}</p>
 
-    <loading
-        :loading=this.governmentLoading>
-    </loading>
+        <div class="item dropdown">
+            <dropdown-list-component
+                :items=this.governmentList
+                :value=this.selectedGovernment
+                input-name="gov-list"
+                label-text="Governments: "
+                @update:value=selectGovernment
+                @change-text=clearResponseText>
+            </dropdown-list-component>
 
-    <div>
-        <counter-component
-            :count-value=this.governmentCount
-            count-text='Current government count: '
-            label-for="govCount">
-        </counter-component>
+            <button-component
+                v-if=this.selectedGovernment
+                id="delete"
+                :button-disabled=this.governmentButtonDisabled
+                button-text="Delete"
+                type="submit"
+                @click-button=deleteGov>
+            </button-component>
+        </div>
     </div>
-
-    <p>{{ this.governmentResponseText }}</p>
-
-    <dropdown-list-component
-        :items=this.governmentList
-        :value=this.selectedGovernment
-        input-name="gov-list"
-        label-text="Governments: "
-        @update:value=selectGovernment
-        @change-text=clearResponseText>
-    </dropdown-list-component>
-
-    <button-component
-        v-if=this.selectedGovernment
-        :button-disabled=this.governmentButtonDisabled
-        button-text="Delete"
-        type="submit"
-        @click-button=deleteGov>
-    </button-component>
 </template>
 
 <script>
@@ -61,13 +69,6 @@ import {isInputEmpty} from '../helpers/validations.js'
 
 export default {
     name: 'AddGovernment',
-    data() {
-        return {
-            //unchanging data
-            inputName: 'gov-name',
-            inputRequired: true,
-        }
-    },
     computed: {
         ...mapState([
             'governmentInput',
@@ -222,3 +223,5 @@ export default {
     },
 }
 </script>
+
+<style src="../css/government.css"/>

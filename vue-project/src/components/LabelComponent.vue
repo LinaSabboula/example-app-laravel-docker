@@ -1,5 +1,5 @@
 <template>
-    <label :for=inputName>{{ labelText }}</label>
+    <label :label-for=inputName>{{ labelText }}</label>
 </template>
 
 <script>

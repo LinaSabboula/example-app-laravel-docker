@@ -1,73 +1,81 @@
 <template>
-    <div class="user-input">
-        <label-component
-            :label-for=nameInput
-            label-text="Name: ">
-        </label-component>
+    <div class="container user-input">
+        <div class="name-section item">
+            <label-component
+                label-for="nameInput"
+                label-text="Name: ">
+            </label-component>
 
-        <text-input-component
-            :input-disabled=userInputDisabled
-            :name=nameInput
-            :required=requiredName
-            :value=userNameInput
-            @update:value=changeNameInput
-            @change-text=changeText
-            @new-input=validateName
-            @submit-input=submitForm>
-        </text-input-component>
+            <text-input-component
+                :input-disabled=userInputDisabled
+                :required=true
+                :value=userNameInput
+                name="nameInput"
+                @update:value=changeNameInput
+                @change-text=changeText
+                @new-input=validateName
+                @submit-input=submitForm>
+            </text-input-component>
+        </div>
 
-        <label-component
-            :label-for=emailInput
-            label-text="Email: ">
-        </label-component>
+        <div class="email-section item">
+            <label-component
+                label-for="emailInput"
+                label-text="Email: ">
+            </label-component>
 
-        <text-input-component
-            :input-disabled=userInputDisabled
-            :name=emailInput
-            :required=requiredEmail
-            :value=userEmailInput
-            @update:value=changeEmailInput
-            @change-text=changeText
-            @new-input=validateEmail
-            @submit-input=submitForm>
-        </text-input-component>
+            <text-input-component
+                :input-disabled=userInputDisabled
+                :required=true
+                :value=userEmailInput
+                name="emailInput"
+                @update:value=changeEmailInput
+                @change-text=changeText
+                @new-input=validateEmail
+                @submit-input=submitForm>
+            </text-input-component>
+        </div>
 
-        <label-component
-            :label-for="passwordInput"
-            label-text="Password: ">
-        </label-component>
+        <div class="password-section item">
+            <label-component
+                label-for="passwordInput"
+                label-text="Password: ">
+            </label-component>
 
-        <text-input-component
-            :input-disabled=userInputDisabled
-            :name=passwordInput
-            :required=requiredPassword
-            :value=userPasswordInput
-            input-type="password"
-            @update:value=changePasswordInput
-            @change-text=changeText
-            @new-input=validatePassword
-            @submit-input=submitForm>
-        </text-input-component>
+            <text-input-component
+                :input-disabled=userInputDisabled
+                :required=true
+                :value=userPasswordInput
+                input-type="password"
+                name="passwordInput"
+                @update:value=changePasswordInput
+                @change-text=changeText
+                @new-input=validatePassword
+                @submit-input=submitForm>
+            </text-input-component>
+        </div>
 
-        <button-component
-            :button-disabled=userButtonDisabled
-            button-text="Add"
-            type="submit"
-            @click-button=submitForm>
-        </button-component>
-
-        <loading
-            :loading=userLoading>
-        </loading>
-
-        <div>
+        <div class="item">
+            <button-component
+                :button-disabled=userButtonDisabled
+                button-text="Add"
+                type="submit"
+                @click-button=submitForm>
+            </button-component>
+        </div>
+        <div class="item">
+            <loading
+                :loading=userLoading>
+            </loading>
+        </div>
+        <div class="counter item">
             <counter-component
                 :countValue=userCount
-                label-for="userCount"
-                count-text="Current user count: ">
+                count-text="Current user count: "
+                label-for="userCount">
             </counter-component>
         </div>
-        <p>{{ userResponseText }}</p>
+        <p class="response item">{{ userResponseText }}</p>
     </div>
 </template>
 
@@ -78,25 +86,6 @@ import {mapMutations, mapState} from "vuex";
 
 export default {
     name: 'AddUser',
-    data() {
-        return {
-            //unchanging data
-            nameInput: 'nameInput',
-            requiredName: true,
-
-
-            emailInput: 'emailInput',
-            requiredEmail: true,
-
-
-            passwordInput: 'passwordInput',
-            requiredPassword: true,
-
-
-            minPasswordLength: 8,
-
-        }
-    },
     computed: {
         ...mapState([
             'userNameInput',
@@ -167,8 +156,8 @@ export default {
             if (isInputEmpty(this.userPasswordInput)) {
                 validationText = "Validation Failed: Please fill all fields!";
                 this.toggleUserButton(true);
-            } else if (!isSpecificLength(this.userPasswordInput, this.minPasswordLength = 8)) {
-                validationText = "Validation Failed: Password must be at least 8 characters long";
+            } else if (!isSpecificLength(this.userPasswordInput, this.minPasswordLength = 9)) {
+                validationText = "Validation Failed: Password must be at least " + this.minPasswordLength + " characters long";
                 this.toggleUserButton(true);
             } else {
                 this.toggleUserButton(false);
@@ -185,7 +174,6 @@ export default {
             if (!this.userResponseText) {
                 this.submitRequest();
             }
-
         },
         submitRequest() {
             const url = import.meta.env.VITE_APP_ADD_USER;
@@ -247,6 +235,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style src="../css/user.css"/>
