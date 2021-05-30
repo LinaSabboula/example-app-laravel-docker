@@ -85,31 +85,31 @@ const store = createStore({
         changeUserPasswordInput(state, value) {
             state.userPasswordInput = value;
         },
-        clearUserNameInput(state){
+        clearUserNameInput(state) {
             state.userNameInput = '';
         },
-        clearUserEmailInput(state){
+        clearUserEmailInput(state) {
             state.userEmailInput = '';
         },
-        clearUserPasswordInput(state){
+        clearUserPasswordInput(state) {
             state.userPasswordInput = '';
         },
-        toggleUserLoading(state, value){
+        toggleUserLoading(state, value) {
             state.userLoading = value;
         },
-        toggleUserInput(state, value){
+        toggleUserInput(state, value) {
             state.userInputDisabled = value;
         },
-        toggleUserButton(state, value){
+        toggleUserButton(state, value) {
             state.userButtonDisabled = value;
         },
-        setUserResponseText(state, value){
+        setUserResponseText(state, value) {
             state.userResponseText = value;
         },
-        clearUserResponseText(state){
+        clearUserResponseText(state) {
             state.userResponseText = '';
         },
-        changeUserCount(state, value){
+        changeUserCount(state, value) {
             state.userCount = value;
         },
 

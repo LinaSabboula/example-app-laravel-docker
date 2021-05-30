@@ -1,7 +1,7 @@
 <template>
     <label-component
-        :for="labelFor"
-        :labelText="userCountText">
+        :for=labelFor
+        :label-text=countText>
     </label-component>
     <span>{{ countValue }}</span>
 </template>
@@ -14,7 +14,7 @@ export default {
             type: Number,
             default: 0,
         },
-        userCountText:{
+        countText:{
           type: String,
           default: 'Count: ',
         },

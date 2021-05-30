@@ -53,7 +53,7 @@
             :button-disabled=userButtonDisabled
             button-text="Add"
             type="submit"
-            @click-button="submitForm">
+            @click-button=submitForm>
         </button-component>
 
         <loading

@@ -1,10 +1,10 @@
 <template>
     <input
-        :disabled="inputDisabled"
-        :name="name"
-        :required="required"
-        :type="inputType"
-        :value="value"
+        :disabled=inputDisabled
+        :name=name
+        :required=required
+        :type=inputType
+        :value=value
         @input="$emit('update:value', $event.target.value)"
         @keydown="$emit('changeText')"
         @keyup="$emit('newInput')"

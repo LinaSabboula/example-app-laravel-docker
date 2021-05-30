@@ -1,6 +1,6 @@
 <template>
     <label-component
-        :for=inputName
+        :label-for=inputName
         labelText='Government: '>
     </label-component>
 

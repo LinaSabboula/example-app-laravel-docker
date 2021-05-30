@@ -5,14 +5,15 @@
         name="toggle-switch"
         @pageFlip="pageFlip">
     </toggle-component>
-    <add-government v-if="showGov"></add-government>
-    <add-user v-if="!showGov"></add-user>
+    <add-government v-if=showGov></add-government>
+    <add-user v-if=!showGov></add-user>
 </template>
 
 <script>
 import {mapMutations, mapState} from "vuex";
 
 export default {
+    name: 'App',
     computed: {
         ...mapState([
             'showGov',
