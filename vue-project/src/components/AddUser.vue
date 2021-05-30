@@ -15,7 +15,7 @@
             @new-input=validateName
             @submit-input=submitForm>
         </text-input-component>
-        <span>{{ this }}</span>
+
         <label-component
             :label-for=emailInput
             label-text="Email: ">
