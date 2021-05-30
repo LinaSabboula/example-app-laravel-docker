@@ -1,219 +1,247 @@
 <template>
     <div class="user-input">
         <label-component
-            :for="nameInput"
-            :labelText="nameLabel">
+            :label-for=nameInput
+            label-text="Name: ">
         </label-component>
 
         <text-input-component
-            :name="nameInput"
-            :required="requiredName"
-            v-model.trim="nameInputText"
-            @changeText="changeText"
-            @submitInput="submitForm"
-            @newInput="validateName"
-            :input-disabled="inputDisabled">
+            :input-disabled=userInputDisabled
+            :name=nameInput
+            :required=requiredName
+            :value=userNameInput
+            @update:value=changeNameInput
+            @change-text=changeText
+            @new-input=validateName
+            @submit-input=submitForm>
+        </text-input-component>
+        <span>{{ this }}</span>
+        <label-component
+            :label-for=emailInput
+            label-text="Email: ">
+        </label-component>
+
+        <text-input-component
+            :input-disabled=userInputDisabled
+            :name=emailInput
+            :required=requiredEmail
+            :value=userEmailInput
+            @update:value=changeEmailInput
+            @change-text=changeText
+            @new-input=validateEmail
+            @submit-input=submitForm>
         </text-input-component>
 
         <label-component
-            :for="emailInput"
-            :labelText="emailLabel">
+            :label-for="passwordInput"
+            label-text="Password: ">
         </label-component>
 
         <text-input-component
-            :name="emailInput"
-            :required="requiredEmail"
-            v-model.trim="emailInputText"
-            @changeText="changeText"
-            @submitInput="submitForm"
-            @newInput="validateEmail"
-            :input-disabled="inputDisabled">
-        </text-input-component>
-
-        <label-component
-            :for="passwordInput"
-            :labelText="passwordLabel">
-        </label-component>
-
-        <text-input-component
-            :inputType="passwordInputType"
-            :name="passwordInput"
-            :required="requiredPassword"
-            v-model.trim="passwordInputText"
-            @changeText="changeText"
-            @submitInput="submitForm"
-            @newInput="validatePassword"
-            :input-disabled="inputDisabled">
+            :input-disabled=userInputDisabled
+            :name=passwordInput
+            :required=requiredPassword
+            :value=userPasswordInput
+            input-type="password"
+            @update:value=changePasswordInput
+            @change-text=changeText
+            @new-input=validatePassword
+            @submit-input=submitForm>
         </text-input-component>
 
         <button-component
-            :buttonText="buttonText"
-            :type="buttonType"
-            :button-disabled="buttonDisabled"
-            @clickButton="submitForm">
+            :button-disabled=userButtonDisabled
+            button-text="Add"
+            type="submit"
+            @click-button="submitForm">
         </button-component>
 
         <loading
-            :loading="loading">
+            :loading=userLoading>
         </loading>
 
         <div>
             <counter-component
-                :countValue="userCount"
-                userCountText="Current user count: "
-                labelFor="userCount">
+                :countValue=userCount
+                labelFor="userCount"
+                user-count-text="Current user count: ">
             </counter-component>
         </div>
-        <p>{{ responseText }}</p>
+        <p>{{ userResponseText }}</p>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import {isAlphabetic, isInputEmpty, isSpecificLength, isValidEmail, makeSingleSpaced} from '../helpers/validations.js'
+import {mapMutations, mapState} from "vuex";
 
 export default {
+    name: 'AddUser',
+    data() {
+        return {
+            //unchanging data
+            nameInput: 'nameInput',
+            requiredName: true,
+
+
+            emailInput: 'emailInput',
+            requiredEmail: true,
+
+
+            passwordInput: 'passwordInput',
+            requiredPassword: true,
+
+
+            minPasswordLength: 8,
+
+        }
+    },
+    computed: {
+        ...mapState([
+            'userNameInput',
+            'userEmailInput',
+            'userPasswordInput',
+            'userButtonDisabled',
+            'userLoading',
+            'userResponseText',
+            'userInputDisabled',
+            'userCount',
+        ]),
+    },
     mounted() {
         this.getUserCount()
     },
     methods: {
-        validateName(){
-            if(isInputEmpty(this.nameInputText)){
-                this.responseText = "Validation Failed: Please fill all fields!";
-                this.buttonDisabled = true;
-            }
-            else if(!isAlphabetic(this.nameInputText)) {
-                this.responseText = "Validation Failed: Name must not contain any non-alphabetic characters";
-                this.buttonDisabled = true;
-            }
-            else{
-                this.buttonDisabled = false
-            }
+        ...mapMutations([
+            'changeUserNameInput',
+            'changeUserEmailInput',
+            'changeUserPasswordInput',
+            'clearUserNameInput',
+            'clearUserEmailInput',
+            'clearUserPasswordInput',
+            'toggleUserLoading',
+            'toggleUserButton',
+            'toggleUserInput',
+            'setUserResponseText',
+            'clearUserResponseText',
+            'changeUserCount'
+        ]),
+        changeNameInput(value) {
+            this.changeUserNameInput(value);
         },
-        validateEmail(){
-            if (isInputEmpty(this.emailInputText)){
-                this.responseText = "Validation Failed: Please fill all fields!";
-                this.buttonDisabled = true;
-            }
-            else if(!isValidEmail(this.emailInputText)) {
-                this.responseText = "Validation Failed: E-mail format not valid";
-                this.buttonDisabled = true;
-            }
-            else{
-                this.buttonDisabled = false
-            }
+        changeEmailInput(value) {
+            this.changeUserEmailInput(value);
         },
-        validatePassword(){
-            if (isInputEmpty(this.passwordInputText)) {
-                this.responseText = "Validation Failed: Please fill all fields!";
-                this.buttonDisabled = true;
-            }
-        else if(!isSpecificLength(this.passwordInputText, this.minPasswordLength = 8)) {
-                this.responseText = "Validation Failed: Password must be at least 8 characters long";
-                this.buttonDisabled = true;
-            }
-            else{
-                this.buttonDisabled = false
-            }
+        changePasswordInput(value) {
+            this.changeUserPasswordInput(value);
         },
-        submitForm(){
+        validateName() {
+            let validationText = '';
+            if (isInputEmpty(this.userNameInput)) {
+                validationText = "Validation Failed: Please fill all fields!";
+                this.buttonDisabled = true;
+            } else if (!isAlphabetic(this.userNameInput)) {
+                validationText = "Validation Failed: Name must not contain any non-alphabetic characters";
+                this.toggleUserButton(true);
+            } else {
+                this.toggleUserButton(false);
+            }
+            this.setUserResponseText(validationText);
+        },
+        validateEmail() {
+            let validationText = '';
+            if (isInputEmpty(this.userEmailInput)) {
+                validationText = "Validation Failed: Please fill all fields!";
+                this.toggleUserButton(true);
+            } else if (!isValidEmail(this.userEmailInput)) {
+                validationText = "Validation Failed: E-mail format not valid";
+                this.toggleUserButton(true);
+            } else {
+                this.toggleUserButton(false);
+            }
+            this.setUserResponseText(validationText);
+        },
+        validatePassword() {
+            let validationText = '';
+            if (isInputEmpty(this.userPasswordInput)) {
+                validationText = "Validation Failed: Please fill all fields!";
+                this.toggleUserButton(true);
+            } else if (!isSpecificLength(this.userPasswordInput, this.minPasswordLength = 8)) {
+                validationText = "Validation Failed: Password must be at least 8 characters long";
+                this.toggleUserButton(true);
+            } else {
+                this.toggleUserButton(false);
+            }
+            this.setUserResponseText(validationText);
+        },
+        submitForm() {
             this.changeLoadingScreen(true, true, true);
-            this.nameInputText = makeSingleSpaced(this.nameInputText);
+            this.changeNameInput(makeSingleSpaced(this.userNameInput));
             this.validateName();
             this.validateEmail();
             this.validatePassword();
             this.changeLoadingScreen();
-            if(!this.responseText){
+            if (!this.userResponseText) {
                 this.submitRequest();
             }
 
         },
-        submitRequest(){
+        submitRequest() {
             const url = import.meta.env.VITE_APP_ADD_USER;
             axios.post(url, {
-                name: this.nameInputText,
-                email: this.emailInputText,
-                password: this.passwordInputText,
+                name: this.userNameInput,
+                email: this.userEmailInput,
+                password: this.userPasswordInput,
             })
                 .then(response => {
                     this.changeLoadingScreen();
-                    this.responseText = response.data ? response.data : "Success";
+                    this.setUserResponseText(response.data ? response.data : "Success");
                     this.getUserCount();
                     this.clearAllInputs();
                 })
-                .catch(error =>{
+                .catch(error => {
                     this.changeLoadingScreen();
                     this.clearPasswordInput();
-                    this.responseText = 'Validation Failed';
-                    if(error.response && error.response.data){
-                        this.responseText += ": " + error.response.data;
+                    let validationText = 'Validation Failed';
+                    if (error.response && error.response.data) {
+                        validationText += ": " + error.response.data;
                     }
+                    this.setUserResponseText(validationText);
                 });
         },
-        clearAllInputs(){
+        clearAllInputs() {
             this.clearNameInput();
             this.clearEMailInput();
             this.clearPasswordInput();
         },
-        clearNameInput(){
-            this.nameInputText = '';
+        clearNameInput() {
+            this.clearUserNameInput();
         },
         clearEMailInput() {
-            this.emailInputText = '';
+            this.clearUserEmailInput();
         },
-        clearPasswordInput(){
-            this.passwordInputText = '';
+        clearPasswordInput() {
+            this.clearUserPasswordInput();
         },
-        changeText(){
-            this.responseText = '';
+        changeText() {
+            this.clearUserResponseText();
         },
-        changeLoadingScreen(loading=false, inputDisabled=false, isButtonDisabled=false){
-            this.loading = loading;
-            this.inputDisabled = inputDisabled;
-            this.buttonDisabled = isButtonDisabled;
+        changeLoadingScreen(loading = false, inputDisabled = false, buttonDisabled = false) {
+            this.toggleUserLoading(loading);
+            this.toggleUserButton(buttonDisabled);
+            this.toggleUserInput(inputDisabled);
         },
-        async getUserCount(){
+        async getUserCount() {
             const url = import.meta.env.VITE_APP_USER_COUNT;
             try {
                 const response = await axios.get(url);
-                if(response.data) {
-                    this.userCount = response.data;
+                if (response.data) {
+                    this.changeUserCount(response.data);
                 }
             } catch (error) {
                 console.error(error);
             }
-        }
-    },
-    data() {
-        return{
-            nameInput: 'nameInput',
-            requiredName: true,
-            nameLabel: 'Name: ',
-            nameInputText: '',
-
-            emailInput: 'emailInput',
-            requiredEmail: true,
-            emailLabel: 'E-mail: ',
-            emailInputText: '',
-
-            passwordInput: 'passInput',
-            passwordInputType: 'password',
-            requiredPassword: true,
-            passwordLabel: 'Password: ',
-            passwordInputText: '',
-            minPasswordLength: 8,
-
-            buttonText: 'Add',
-            buttonType: 'submit',
-            buttonDisabled: false,
-
-            loading: false,
-
-            responseText: '',
-
-            inputDisabled: false,
-
-            userCount: 0,
         }
     },
 }
