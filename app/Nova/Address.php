@@ -3,20 +3,21 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Government extends Resource
+class Address extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Government::class;
+    public static $model = \App\Models\Address::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -32,7 +33,10 @@ class Government extends Resource
      */
     public static $search = [
         'id',
-        'name',
+        'street',
+        'building',
+        'floor_number',
+        'apartment_number',
         'created_at',
         'updated_at',
     ];
@@ -47,10 +51,14 @@ class Government extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('name')->sortable(),
+            Text::make('street')->sortable(),
+            Text::make('building')->sortable(),
+            Number::make('Floor Number')->sortable(),
+            Number::make('Apartment Number')->sortable(),
             DateTime::make('Created At')->sortable(),
             DateTime::make('Updated At')->sortable(),
-            HasMany::make('City'),
+            BelongsTo::make('User')->sortable(),
+            BelongsTo::make('Area')->sortable(),
         ];
     }
 
