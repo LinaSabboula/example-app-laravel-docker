@@ -11,7 +11,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/telescope": "^4.4",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "laravel/nova": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -33,6 +34,12 @@
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./nova"
+        }
+    ],
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
@@ -48,6 +55,7 @@
             "@php artisan telescope:publish --ansi"
         ]
     },
+
     "extra": {
         "laravel": {
             "dont-discover": []
