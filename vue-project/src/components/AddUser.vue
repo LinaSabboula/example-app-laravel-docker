@@ -11,8 +11,8 @@
                 :required=true
                 :value=this.userNameInput
                 name="nameInput"
-                @update:value=changeNameInput
-                @change-text=changeText
+                @update:value=this.changeUserNameInput
+                @change-text=this.clearUserResponseText
                 @new-input=validateName
                 @submit-input=submitForm>
             </text-input-component>
@@ -29,8 +29,8 @@
                 :required=true
                 :value=this.userEmailInput
                 name="emailInput"
-                @update:value=changeEmailInput
-                @change-text=changeText
+                @update:value=this.changeUserEmailInput
+                @change-text=this.clearUserResponseText
                 @new-input=validateEmail
                 @submit-input=submitForm>
             </text-input-component>
@@ -48,8 +48,8 @@
                 :value=this.userPasswordInput
                 input-type="password"
                 name="passwordInput"
-                @update:value=changePasswordInput
-                @change-text=changeText
+                @update:value=this.changeUserPasswordInput
+                @change-text=this.clearUserResponseText
                 @new-input=validatePassword
                 @submit-input=submitForm>
             </text-input-component>
@@ -117,15 +117,6 @@ export default {
             'clearUserResponseText',
             'changeUserCount'
         ]),
-        changeNameInput(value) {
-            this.changeUserNameInput(value);
-        },
-        changeEmailInput(value) {
-            this.changeUserEmailInput(value);
-        },
-        changePasswordInput(value) {
-            this.changeUserPasswordInput(value);
-        },
         validateName() {
             let validationText = '';
             if (isInputEmpty(this.userNameInput)) {
@@ -167,7 +158,7 @@ export default {
         },
         submitForm() {
             this.changeLoadingScreen(true, true, true);
-            this.changeNameInput(makeSingleSpaced(this.userNameInput));
+            this.changeUserNameInput(makeSingleSpaced(this.userNameInput));
             this.validateName();
             this.validateEmail();
             this.validatePassword();
@@ -191,7 +182,7 @@ export default {
                 })
                 .catch(error => {
                     this.changeLoadingScreen();
-                    this.clearPasswordInput();
+                    this.clearUserPasswordInput();
                     let validationText = 'Validation Failed';
                     if (error.response && error.response.data) {
                         validationText += ": " + error.response.data;
@@ -200,22 +191,11 @@ export default {
                 });
         },
         clearAllInputs() {
-            this.clearNameInput();
-            this.clearEMailInput();
-            this.clearPasswordInput();
-        },
-        clearNameInput() {
             this.clearUserNameInput();
-        },
-        clearEMailInput() {
             this.clearUserEmailInput();
-        },
-        clearPasswordInput() {
             this.clearUserPasswordInput();
         },
-        changeText() {
-            this.clearUserResponseText();
-        },
+
         changeLoadingScreen(loading = false, inputDisabled = false, buttonDisabled = false) {
             this.toggleUserLoading(loading);
             this.toggleUserButton(buttonDisabled);

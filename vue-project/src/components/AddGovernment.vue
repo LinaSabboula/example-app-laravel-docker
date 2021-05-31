@@ -11,10 +11,10 @@
                 :required=true
                 :value=this.governmentInput
                 name="gov-name"
-                @change-text=clearResponseText
+                @update:value=this.changeGovernmentTextInput
+                @change-text=this.clearGovernmentResponseText
                 @new-input=validateGovernment
-                @submit-input=submitForm
-                @update:value=changeTextInput>
+                @submit-input=submitForm>
             </text-input-component>
         </div>
         <div class="item btn">
@@ -46,8 +46,8 @@
                 :value=this.selectedGovernment
                 input-name="gov-list"
                 label-text="Governments: "
-                @update:value=selectGovernment
-                @change-text=clearResponseText>
+                @update:value=this.changeSelectedGovernment
+                @change-text=this.clearGovernmentResponseText>
             </dropdown-list-component>
 
             <button-component
@@ -101,12 +101,6 @@ export default {
             'clearSelectedGovernment',
 
         ]),
-        changeTextInput(value) {
-            this.changeGovernmentTextInput(value);
-        },
-        selectGovernment(value) {
-            this.changeSelectedGovernment(value);
-        },
         deleteGov() {
             this.changeLoadingScreen(true, true, true);
             // ensure that `selectedGovernment` is set
@@ -191,9 +185,7 @@ export default {
         clearInput() {
             this.clearGovernmentInputText();
         },
-        clearResponseText() {
-            this.clearGovernmentResponseText();
-        },
+
         async getGovernmentCount() {
             const url = import.meta.env.VITE_APP_GOV_COUNT;
             try {
