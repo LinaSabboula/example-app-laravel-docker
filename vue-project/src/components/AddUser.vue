@@ -1,6 +1,6 @@
 <template>
     <div class="container user-input">
-        <div class="name-section item">
+        <div class="input-section item">
             <label-component
                 label-for="nameInput"
                 label-text="Name: ">
@@ -18,7 +18,7 @@
             </text-input-component>
         </div>
 
-        <div class="email-section item">
+        <div class="input-section item">
             <label-component
                 label-for="emailInput"
                 label-text="Email: ">
@@ -36,7 +36,7 @@
             </text-input-component>
         </div>
 
-        <div class="password-section item">
+        <div class="input-section item">
             <label-component
                 label-for="passwordInput"
                 label-text="Password: ">
@@ -55,7 +55,7 @@
             </text-input-component>
         </div>
 
-        <div class="item">
+        <div class="item btn">
             <button-component
                 :button-disabled=this.userButtonDisabled
                 button-text="Add"
@@ -63,7 +63,7 @@
                 @click-button=submitForm>
             </button-component>
         </div>
-        <div class="item">
+        <div class="item loading">
             <loading
                 :loading=this.userLoading>
             </loading>
@@ -75,8 +75,9 @@
                 label-for="userCount">
             </counter-component>
         </div>
-        <p class="response item">{{ this.userResponseText }}</p>
+
     </div>
+    <p class="response item">{{ this.userResponseText }}</p>
 </template>
 
 <script>

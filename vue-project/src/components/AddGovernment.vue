@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="item">
+        <div class="input-section item">
             <label-component
                 label-for="gov-name"
                 labelText='Government: '>
@@ -17,7 +17,7 @@
                 @update:value=changeTextInput>
             </text-input-component>
         </div>
-        <div class="item">
+        <div class="item btn">
             <button-component
                 :button-disabled=this.governmentButtonDisabled
                 button-text="Add"
@@ -25,7 +25,7 @@
                 @click-button=submitForm>
             </button-component>
         </div>
-        <div class="item">
+        <div class="item loading">
             <loading
                 :loading=this.governmentLoading>
             </loading>
