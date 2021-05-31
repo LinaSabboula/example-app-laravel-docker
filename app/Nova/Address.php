@@ -56,12 +56,12 @@ class Address extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('street')->sortable(),
-            Text::make('building')->sortable(),
-            Number::make('Floor Number')->sortable(),
-            Number::make('Apartment Number')->sortable(),
-            DateTime::make('Created At')->sortable(),
-            DateTime::make('Updated At')->sortable(),
+            Text::make('Street', 'street')->sortable(),
+            Text::make('Building', 'building')->sortable(),
+            Number::make('Floor Number' ,'floor_number')->sortable(),
+            Number::make('Apartment Number', 'apartment_number')->sortable(),
+            DateTime::make('Created At', 'created_at')->sortable(),
+            DateTime::make('Updated At', 'updated_at')->sortable(),
             BelongsTo::make('User')->sortable(),
             BelongsTo::make('Area')->sortable(),
         ];
