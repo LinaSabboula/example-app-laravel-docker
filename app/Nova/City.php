@@ -54,11 +54,11 @@ class City extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('name')->sortable(),
-            DateTime::make('Created At')->sortable(),
-            DateTime::make('Updated At')->sortable(),
+            Text::make('Name', 'name')->sortable(),
+            DateTime::make('Created At', 'created_at')->sortable(),
+            DateTime::make('Updated At', 'updated_at')->sortable(),
             BelongsTo::make('Government'),
-            HasMany::make('Area'),
+            HasMany::make('Areas'),
         ];
     }
 
