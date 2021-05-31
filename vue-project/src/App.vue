@@ -6,7 +6,7 @@
         @pageFlip="pageFlip">
     </toggle-component>
     <add-government v-if=showGov></add-government>
-    <add-user v-if=!showGov></add-user>
+    <add-user v-else></add-user>
 </template>
 
 <script>
