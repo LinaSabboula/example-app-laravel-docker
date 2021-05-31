@@ -37,6 +37,12 @@ class Area extends Resource
         'created_at',
         'updated_at',
     ];
+    /**
+     * The relationships that should be eager loaded on index queries.
+     *
+     * @var array
+     */
+    public static $with = ['city'];
 
     /**
      * Get the fields displayed by the resource.
