@@ -1,27 +1,33 @@
 <template>
     <toggle-component
-        :name="inputName"
-        :showGov=showGov
-        :labelText="labelText"
+        :label-text=labelText
+        :show-gov=showGov
+        name="toggle-switch"
         @pageFlip="pageFlip">
     </toggle-component>
-    <add-government v-if="showGov"></add-government>
-    <add-user v-if="!showGov"></add-user>
+    <add-government v-if=showGov></add-government>
+    <add-user v-else></add-user>
 </template>
 
 <script>
+import {mapMutations, mapState} from "vuex";
+
 export default {
-    data(){
-        return{
-            showGov: true,
-            labelText: 'User',
-            inputName: 'toggle-switch'
-        }
+    name: 'App',
+    computed: {
+        ...mapState([
+            'showGov',
+            'labelText',
+        ]),
     },
-    methods:{
-        pageFlip(){
-            this.showGov = !this.showGov;
-            this.showGov ? this.labelText = 'User' : this.labelText = 'Government';
+    methods: {
+        ...mapMutations([
+            'toggleViewState',
+            'toggleViewLabel',
+        ]),
+        pageFlip() {
+            this.toggleViewState();
+            this.toggleViewLabel();
         }
     }
 }

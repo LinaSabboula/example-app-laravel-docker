@@ -1,15 +1,15 @@
 <template>
-    <label :for="inputName">{{ labelText }}</label>
+    <label :label-for=inputName>{{ labelText }}</label>
 </template>
 
 <script>
 export default {
     props: {
-        'inputName': {
+        inputName: {
             type: String,
             default: 'label',
         },
-        'labelText': {
+        labelText: {
             type: String,
             required: true,
         },

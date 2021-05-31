@@ -1,8 +1,9 @@
 <template>
-    <button :type="type"
-            @click="$emit('clickButton')"
-            :disabled="buttonDisabled">
-            {{ getButtonText }}
+    <button :id="id"
+            :disabled="buttonDisabled"
+            :type="type"
+            @click="$emit('clickButton')">
+        {{ getButtonText }}
     </button>
 </template>
 
@@ -12,24 +13,28 @@ export default {
         'clickButton'
     ],
     props: {
-        'buttonText': {
+        id: {
+            type: String,
+            default: "btn"
+        },
+        buttonText: {
             type: String,
             required: true,
             default: "Ok",
         },
-        'type': {
+        type: {
             type: String,
             default: 'button',
         },
-        'buttonDisabled': {
+        buttonDisabled: {
             type: Boolean,
             required: true,
             default: false,
         }
     },
     computed: {
-        getButtonText(){
-            return this.buttonText=== null ? 'OK' : this.buttonText
+        getButtonText() {
+            return this.buttonText === null ? 'OK' : this.buttonText
         }
     },
 }

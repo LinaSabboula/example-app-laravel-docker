@@ -1,188 +1,219 @@
 <template>
-    <label-component
-        :for="inputName"
-        :labelText="labelText">
-    </label-component>
+    <div class="container">
+        <div class="input-section item">
+            <label-component
+                label-for="gov-name"
+                labelText='Government: '>
+            </label-component>
 
-    <text-input-component
-        :name="inputName"
-        :required="required"
-        v-model.trim="governmentInput"
-        @changeText="changeText"
-        @submitInput="submitForm"
-        @newInput="validateGovernment"
-        :input-disabled="inputDisabled">
-    </text-input-component>
+            <text-input-component
+                :input-disabled=this.governmentInputDisabled
+                :required=true
+                :value=this.governmentInput
+                name="gov-name"
+                @update:value=this.changeGovernmentTextInput
+                @change-text=this.clearGovernmentResponseText
+                @new-input=validateGovernment
+                @submit-input=submitForm>
+            </text-input-component>
+        </div>
+        <div class="item btn">
+            <button-component
+                :button-disabled=this.governmentButtonDisabled
+                button-text="Add"
+                type="submit"
+                @click-button=submitForm>
+            </button-component>
+        </div>
+        <div class="item loading">
+            <loading
+                :loading=this.governmentLoading>
+            </loading>
+        </div>
+        <div class="item counter">
+            <counter-component
+                :count-value=this.governmentCount
+                count-text='Current government count: '
+                label-for="govCount">
+            </counter-component>
+        </div>
 
-    <button-component
-        :buttonText="buttonText"
-        :type="buttonType"
-        :button-disabled="buttonDisabled"
-        @clickButton="submitForm">
-    </button-component>
+        <p class="item response">{{ this.governmentResponseText }}</p>
 
-    <loading
-        :loading="loading">
-    </loading>
-    <div>
-        <counter-component
-            :countValue="govCount"
-            userCountText='Current government count: '
-            labelFor="govCount">
-        </counter-component>
+        <div class="item dropdown">
+            <dropdown-list-component
+                :items=this.governmentList
+                :value=this.selectedGovernment
+                input-name="gov-list"
+                label-text="Governments: "
+                @update:value=this.changeSelectedGovernment
+                @change-text=this.clearGovernmentResponseText>
+            </dropdown-list-component>
+
+            <button-component
+                v-if=this.selectedGovernment
+                id="delete"
+                :button-disabled=this.governmentButtonDisabled
+                button-text="Delete"
+                type="submit"
+                @click-button=deleteGov>
+            </button-component>
+        </div>
     </div>
-    <p>{{ responseText }}</p>
-    <dropdown-list-component
-        :items="govList"
-        label-text="Governments: "
-        input-name="gov-list"
-        v-model="selectedGovID"
-        @change-text="changeText">
-    </dropdown-list-component>
-
-    <button-component
-        v-if="selectedGovID"
-        button-text="Delete"
-        type="submit"
-        :button-disabled="buttonDisabled"
-        @click-button="deleteGov">
-    </button-component>
 </template>
 
 <script>
 import axios from 'axios';
+import {mapMutations, mapState} from 'vuex';
 import {isInputEmpty} from '../helpers/validations.js'
+
 export default {
     name: 'AddGovernment',
-    mounted(){
+    computed: {
+        ...mapState([
+            'governmentInput',
+            'governmentResponseText',
+            'governmentInputDisabled',
+            'governmentButtonDisabled',
+            'governmentLoading',
+            'governmentCount',
+            'governmentList',
+            'selectedGovernment',
+        ]),
+    },
+    mounted() {
         this.getGovernmentCount();
         this.populateList();
     },
     methods: {
-        deleteGov(){
-            this.changeLoadingScreen(true,true, true);
-            // ensure that `selectedGovID` is set
-            if(isInputEmpty(this.selectedGovID)){
-                this.responseText = "Validation Failed: Please provide a government!";
+        ...mapMutations([
+            'changeGovernmentTextInput',
+            'clearGovernmentInputText',
+            'setGovernmentResponseText',
+            'clearGovernmentResponseText',
+            'toggleGovernmentInput',
+            'toggleGovernmentButton',
+            'toggleGovernmentLoading',
+            'changeGovernmentCount',
+            'clearGovernmentList',
+            'addToGovernmentList',
+            'changeSelectedGovernment',
+            'clearSelectedGovernment',
+
+        ]),
+        deleteGov() {
+            this.changeLoadingScreen(true, true, true);
+            // ensure that `selectedGovernment` is set
+            if (isInputEmpty(this.selectedGovernment)) {
+                let validationText = "Validation Failed: Please provide a government!";
+                this.setGovernmentResponseText(validationText);
                 this.changeLoadingScreen();
-            }
-            else{
+            } else {
                 this.deleteRequest();
             }
         },
-        deleteRequest(){
+        successfulRequest(response) {
+            this.changeLoadingScreen();
+            let validationText = response.data ? response.data : "Success";
+            this.setGovernmentResponseText(validationText);
+            this.getGovernmentCount();
+            this.populateList();
+        },
+        failedRequest(error) {
+            this.changeLoadingScreen();
+            let validationText = 'Validation Failed: ';
+            if (error.response && error.response.data) {
+                validationText += error.response.data;
+            } else {
+                validationText += error;
+            }
+            this.setGovernmentResponseText(validationText);
+        },
+        deleteRequest() {
             const url = import.meta.env.VITE_APP_DELETE_GOV;
-            axios.delete(url+this.selectedGovID)
+            axios.delete(url + this.selectedGovernment)
                 .then(response => {
-                    this.changeLoadingScreen();
-                    this.responseText = response.data ? response.data : "Success";
-                    this.getGovernmentCount();
-                    this.populateList();
+                    this.successfulRequest(response);
                 })
                 .catch(error => {
-                    this.changeLoadingScreen();
-                    this.responseText = 'Validation Failed';
-                    if (error.response && error.response.data) {
-                        this.responseText += ": " + error.response.data;
-                    }
+                    this.failedRequest(error);
                 });
         },
-        validateGovernment(){
-            if(isInputEmpty(this.governmentInput)) {
-                this.responseText = "Validation Failed: Please provide a government!";
-                this.buttonDisabled = true;
-            }
-            else{
-                this.buttonDisabled = false;
+        validateGovernment() {
+            if (isInputEmpty(this.governmentInput)) {
+                let validationText = "Validation Failed: Please provide a government!";
+                this.setGovernmentResponseText(validationText);
+                this.toggleGovernmentButton(true);
+            } else {
+                this.toggleGovernmentButton(false);
             }
         },
-        submitForm(){
-            this.changeLoadingScreen(true,true, true);
-            if(isInputEmpty(this.governmentInput)){
-                this.responseText = "Validation Failed: Please provide a government!";
+        submitForm() {
+            this.changeLoadingScreen(true, true, true);
+            if (isInputEmpty(this.governmentInput)) {
+                let validationText = "Validation Failed: Please provide a government!";
+                this.setGovernmentResponseText(validationText);
                 this.changeLoadingScreen();
-            }
-            else{
+            } else {
                 this.submitRequest();
             }
         },
-        submitRequest(){
+        submitRequest() {
             const url = import.meta.env.VITE_APP_ADD_GOV;
-            axios.post(url,{
+            axios.post(url, {
                 name: this.governmentInput,
             })
                 .then(response => {
-                    this.changeLoadingScreen();
-                    this.responseText = response.data ? response.data : "Success";
-                    this.getGovernmentCount();
-                    this.populateList();
+                    this.successfulRequest(response);
                     this.clearInput();
                 })
                 .catch(error => {
-                    this.changeLoadingScreen();
-                    this.responseText = 'Validation Failed';
-                    if(error.response && error.response.data){
-                        this.responseText += ": " + error.response.data;
-                    }
+                    this.failedRequest(error);
+                    /**
+                     * TODO
+                     *  cache failed duplicate government variable
+                     *  and check if new input is different from
+                     *  cached variable instead of sending multiple queries
+                     */
                 });
         },
-        changeLoadingScreen(loading=false, inputDisabled=false, buttonDisabled=false){
-            this.loading = loading;
-            this.inputDisabled = inputDisabled;
-            this.buttonDisabled = buttonDisabled;
+        changeLoadingScreen(loading = false, inputDisabled = false, buttonDisabled = false) {
+            this.toggleGovernmentLoading(loading);
+            this.toggleGovernmentInput(inputDisabled);
+            this.toggleGovernmentButton(buttonDisabled);
         },
-        clearInput(){
-            this.governmentInput = '';
+        clearInput() {
+            this.clearGovernmentInputText();
         },
-        changeText() {
-            this.responseText = '';
-        },
+
         async getGovernmentCount() {
             const url = import.meta.env.VITE_APP_GOV_COUNT;
             try {
                 const response = await axios.get(url);
-                if(response.data) {
-                    this.govCount = response.data;
+                if (response.data) {
+                    this.changeGovernmentCount(response.data);
                 }
             } catch (error) {
                 console.error(error);
             }
         },
-        async populateList(){
+        async populateList() {
             const url = import.meta.env.VITE_APP_GET_ALL_GOVS;
             try {
                 const response = await axios.get(url);
-                if(response.data) {
-                    this.govList = [];
-                    this.selectedGovID = null;
-                    for (let gov of response.data){
-                        this.govList.push(gov);
+                if (response.data) {
+                    this.clearGovernmentList();
+                    this.clearSelectedGovernment();
+                    for (let government of response.data) {
+                        this.addToGovernmentList(government);
                     }
                 }
             } catch (error) {
                 console.error(error);
             }
         },
-
     },
-    data(){
-        return{
-            inputName: 'gov-name',
-            labelText: 'Government: ',
-            buttonType: 'submit',
-            buttonText: 'Add',
-            inputType: 'text',
-            required: true,
-            governmentInput: '',
-            responseText: '',
-            inputDisabled: false,
-            buttonDisabled: false,
-            loading: false,
-            govCount: 0,
-            govList: [],
-            selectedGovID: null,
-        }
-    },
-
 }
 </script>
+
+<style src="../css/government.css"/>

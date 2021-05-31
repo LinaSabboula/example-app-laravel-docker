@@ -1,0 +1,31 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.item {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+}
+.input-section {
+    justify-content: space-between;
+}
+
+.btn {
+    align-self: center;
+}
+.btn button {
+    padding: 1rem;
+}
+
+.loading .response .counter .btn{
+    flex: 0.5;
+}
+
