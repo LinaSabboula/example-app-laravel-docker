@@ -26,6 +26,7 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/count-governments', [GovernmentController::class, 'getCount']);
     Route::get('/get-governments', [GovernmentController::class, 'index']);
     Route::delete('/delete-government/{id}', [GovernmentController::class, 'delete', '{id}']);
+    Route::get('/get-active-governments', [GovernmentController::class, 'getActive']);
 });
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
