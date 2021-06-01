@@ -40,6 +40,6 @@ class CityFilter extends Filter
      */
     public function options(Request $request)
     {
-        return DB::table('cities')->pluck('id', 'name')->all();
+        return City::pluck('id', 'name');
     }
 }
