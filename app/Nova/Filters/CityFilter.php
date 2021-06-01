@@ -30,7 +30,6 @@ class CityFilter extends Filter
     public function apply(Request $request, $query, $value)
     {
         return $query->where('city_id', $value);
-//        return $query->where('name');
     }
 
     /**
@@ -41,11 +40,6 @@ class CityFilter extends Filter
      */
     public function options(Request $request)
     {
-        $cities = DB::table('cities')->select('id', 'name')->get();
-        $citiesArray = [];
-        foreach ($cities as $city){
-            $citiesArray[$city->name] = $city->id;
-        }
-        return $citiesArray;
+        return DB::table('cities')->pluck('id', 'name')->all();
     }
 }
