@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\DeactivateGovernments;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
 //         $schedule->command('inspire')->everyMinute();
         $schedule->command('telescope:prune')->daily();
-        $schedule->call('App\Http\Controllers\GovernmentController@activateGovernments')->hourly();
+        $schedule->job(new DeactivateGovernments)->hourly();
     }
 
     /**

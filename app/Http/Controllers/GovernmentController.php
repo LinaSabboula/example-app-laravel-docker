@@ -35,13 +35,6 @@ class GovernmentController extends Controller
             ->header('Content-Type', 'application/json');
     }
 
-    /**
-     * Activate governments that have a city attached
-     */
-    public function activateGovernments(){
-        Government::has('cities')
-            ->update(['is_active' => true]);
-    }
 
     /**
      * Show the form for creating a new resource.
