@@ -26,6 +26,24 @@ class GovernmentController extends Controller
     }
 
     /**
+     *  Display activated governments
+     * @return \Illuminate\Http\Response
+     */
+    public function getActive(){
+        $governments = Government::where('is_active', true)->get();
+        return response($governments, 200)
+            ->header('Content-Type', 'application/json');
+    }
+
+    /**
+     * Activate governments that have a city attached
+     */
+    public function activateGovernments(){
+        Government::has('cities')
+            ->update(['is_active' => true]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

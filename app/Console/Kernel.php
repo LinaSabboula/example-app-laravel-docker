@@ -24,8 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+//         $schedule->command('inspire')->everyMinute();
         $schedule->command('telescope:prune')->daily();
+        $schedule->call('App\Http\Controllers\GovernmentController@activateGovernments')->hourly();
     }
 
     /**
