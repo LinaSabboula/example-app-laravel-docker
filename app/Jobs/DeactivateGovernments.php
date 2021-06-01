@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Http\Controllers\GovernmentController;
 use App\Models\Government;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -31,7 +32,7 @@ class DeactivateGovernments implements ShouldQueue
      */
     public function handle()
     {
-        Government::doesnthave('cities')
-            ->update(['is_active' => false]);
+        $government = new GovernmentController();
+        $government->deactivateGovernments();
     }
 }

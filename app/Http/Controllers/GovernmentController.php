@@ -35,6 +35,13 @@ class GovernmentController extends Controller
             ->header('Content-Type', 'application/json');
     }
 
+    /**
+     * Deactivate inactive governments in DB
+     */
+    public function deactivateGovernments(){
+        Government::doesnthave('cities')
+            ->update(['is_active' => false]);
+    }
 
     /**
      * Show the form for creating a new resource.
