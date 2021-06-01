@@ -63,7 +63,9 @@ class Address extends Resource
             DateTime::make('Created At', 'created_at')->sortable(),
             DateTime::make('Updated At', 'updated_at')->sortable(),
             BelongsTo::make('User')->sortable(),
+            Number::make('User ID', 'user_id')->sortable(),
             BelongsTo::make('Area')->sortable(),
+            Number::make('Area ID', 'area_id')->sortable(),
         ];
     }
 

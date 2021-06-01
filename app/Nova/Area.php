@@ -7,8 +7,10 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Area extends Resource
 {
@@ -57,7 +59,8 @@ class Area extends Resource
             Text::make('Name', 'name')->sortable(),
             DateTime::make('Created At', 'created_at')->sortable(),
             DateTime::make('Updated At', 'updated_at')->sortable(),
-            BelongsTo::make('City')->sortable(),
+            BelongsTo::make('City', 'city')->sortable(),
+            Number::make('City ID', 'city_id')->sortable(),
             HasMany::make('Addresses')->sortable(),
         ];
     }
@@ -105,6 +108,8 @@ class Area extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new DownloadExcel(),
+        ];
     }
 }
