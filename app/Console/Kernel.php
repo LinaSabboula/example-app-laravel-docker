@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
 //         $schedule->command('inspire')->everyMinute();
         $schedule->command('telescope:prune')->daily();
-        $schedule->command('deactivate:governments')->everyMinute();
+        $schedule->command('deactivate:governments')->hourly();
     }
 
     /**
