@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Government extends Resource
@@ -48,6 +49,7 @@ class Government extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name', 'name')->sortable(),
+            Boolean::make('Active', 'is_active')->sortable(),
             DateTime::make('Created At', 'created_at')->sortable(),
             DateTime::make('Updated At', 'updated_at')->sortable(),
             HasMany::make('Cities'),
