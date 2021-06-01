@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Area extends Resource
 {
@@ -108,7 +109,7 @@ class Area extends Resource
     public function actions(Request $request)
     {
         return [
-            new Actions\ExportAreas,
+            new DownloadExcel(),
         ];
     }
 }
