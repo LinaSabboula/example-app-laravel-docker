@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGovernmentsTable extends Migration
+class AddIsActiveToGovernmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateGovernmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('governments', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->timestamps();
+        Schema::table('governments', function (Blueprint $table) {
+                $table->boolean('is_active')->default(false);
         });
-
     }
 
     /**
@@ -28,6 +25,8 @@ class CreateGovernmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('governments');
+        Schema::table('governments', function (Blueprint $table) {
+                $table->dropColumn('is_active');
+        });
     }
 }
