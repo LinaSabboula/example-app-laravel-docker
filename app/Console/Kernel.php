@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\DeactivateGovernments::class,
     ];
 
     /**
@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
 //         $schedule->command('inspire')->everyMinute();
         $schedule->command('telescope:prune')->daily();
-        $schedule->job(new DeactivateGovernments)->hourly();
+        $schedule->command('deactivate:governments')->everyMinute();
     }
 
     /**
