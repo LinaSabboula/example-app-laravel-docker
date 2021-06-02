@@ -32,7 +32,8 @@ class DeactivateGovernmentsJob implements ShouldQueue
     public function handle()
     {
         $government = new GovernmentController();
-        $updatedGovernments = $government->deactivateGovernments();
-        addInactiveGovernmentsJob::dispatch($updatedGovernments);
+        $activatedInactiveGovernments = $government->getActivatedInactiveGovernments();
+        $government->deactivateGovernments($activatedInactiveGovernments);
+        addInactiveGovernmentsJob::dispatch($activatedInactiveGovernments);
     }
 }
