@@ -15,4 +15,7 @@ class Government extends Model
     public function cities(){
         return $this->hasMany(City::class);
     }
+    public function inactiveGovernments(){
+        return $this->hasMany(InactiveGovernment::class);
+    }
 }
