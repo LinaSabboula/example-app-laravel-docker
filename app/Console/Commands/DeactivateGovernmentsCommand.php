@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
+use App\Jobs\addInactiveGovernmentsJob;
 use App\Jobs\DeactivateGovernmentsJob;
 use Illuminate\Console\Command;
 
@@ -36,6 +37,8 @@ class DeactivateGovernmentsCommand extends Command
      */
     public function handle()
     {
-        DeactivateGovernmentsJob::dispatch();
+        DeactivateGovernmentsJob::withChain([
+            new addInactiveGovernmentsJob,
+        ])->dispatch();
     }
 }
