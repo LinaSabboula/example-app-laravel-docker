@@ -79,6 +79,7 @@ export default {
             'governmentCount',
             'governmentList',
             'selectedGovernment',
+            'previousGovernmentInput'
         ]),
     },
     mounted() {
@@ -99,6 +100,7 @@ export default {
             'addToGovernmentList',
             'changeSelectedGovernment',
             'clearSelectedGovernment',
+            'changePreviousGovernmentInput'
 
         ]),
         deleteGov() {
@@ -140,11 +142,22 @@ export default {
                 });
         },
         validateGovernment() {
+            let validationText = '';
+            let failure = false;
+            this.changeGovernmentTextInput(makeSingleSpaced(this.governmentInput));
             if (isInputEmpty(this.governmentInput)) {
-                let validationText = "Validation Failed: Please provide a government!";
+                validationText = "Validation Failed: Please provide a government!";
+                failure = true;
+            }
+            else if(doesMatch(this.governmentInput, this.previousGovernmentInput)){
+                validationText = 'Validation Failed: Government already exists!!';
+                failure = true;
+            }
+            if (failure){
                 this.setGovernmentResponseText(validationText);
                 this.toggleGovernmentButton(true);
-            } else {
+            }
+            else {
                 this.toggleGovernmentButton(false);
             }
         },
@@ -160,6 +173,7 @@ export default {
         },
         submitRequest() {
             const url = import.meta.env.VITE_APP_ADD_GOV;
+            this.changePreviousGovernmentInput(makeSingleSpaced(this.governmentInput));
             axios.post(url, {
                 name: this.governmentInput,
             })
