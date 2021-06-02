@@ -37,10 +37,16 @@ class GovernmentController extends Controller
 
     /**
      * Deactivate inactive governments in DB
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function deactivateGovernments(){
-        Government::doesnthave('cities')
-            ->update(['is_active' => false]);
+        $governments = Government::doesnthave('cities')
+            ->where('is_active', true)
+            ->get();
+        foreach ($governments as $government){
+            $government->update(['is_active' => false]);
+        }
+        return $governments;
     }
 
     /**

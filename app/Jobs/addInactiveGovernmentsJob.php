@@ -6,6 +6,7 @@ use App\Http\Controllers\InactiveGovernmentController;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -19,9 +20,11 @@ class addInactiveGovernmentsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    protected $updatedGovernments;
+
+    public function __construct(Collection $updatedGovernments)
     {
-        //
+        $this->updatedGovernments = $updatedGovernments;
     }
 
     /**
@@ -32,6 +35,6 @@ class addInactiveGovernmentsJob implements ShouldQueue
     public function handle()
     {
         $inactiveGovernment = new InactiveGovernmentController();
-        $inactiveGovernment->addInactive();
+        $inactiveGovernment->addInactive($this->updatedGovernments);
     }
 }
