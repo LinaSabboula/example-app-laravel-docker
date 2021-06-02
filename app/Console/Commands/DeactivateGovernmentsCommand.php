@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Console\Commands;
+use App\Jobs\DeactivateGovernmentsJob;
 use Illuminate\Console\Command;
 
-class DeactivateGovernments extends Command
+class DeactivateGovernmentsCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -35,6 +36,6 @@ class DeactivateGovernments extends Command
      */
     public function handle()
     {
-        \App\Jobs\DeactivateGovernments::dispatch();
+        DeactivateGovernmentsJob::dispatch();
     }
 }
