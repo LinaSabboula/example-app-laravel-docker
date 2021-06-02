@@ -17,6 +17,7 @@ const store = createStore({
             governmentCount: null,
             governmentList: [],
             selectedGovernment: null,
+            previousGovernmentInput: null,
 
             //AddUser.vue
             userNameInput: '',
@@ -73,6 +74,9 @@ const store = createStore({
         },
         clearSelectedGovernment(state) {
             state.selectedGovernment = null;
+        },
+        changePreviousGovernmentInput(state, value){
+            state.previousGovernmentInput = value;
         },
 
         //AddUser.vue

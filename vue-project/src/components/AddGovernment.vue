@@ -65,7 +65,7 @@
 <script>
 import axios from 'axios';
 import {mapMutations, mapState} from 'vuex';
-import {isInputEmpty} from '../helpers/validations.js'
+import {isInputEmpty, doesMatch, makeSingleSpaced} from '../helpers/validations.js'
 
 export default {
     name: 'AddGovernment',
@@ -183,12 +183,6 @@ export default {
                 })
                 .catch(error => {
                     this.failedRequest(error);
-                    /**
-                     * TODO
-                     *  cache failed duplicate government variable
-                     *  and check if new input is different from
-                     *  cached variable instead of sending multiple queries
-                     */
                 });
         },
         changeLoadingScreen(loading = false, inputDisabled = false, buttonDisabled = false) {
