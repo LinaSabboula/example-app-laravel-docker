@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -10,6 +11,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class Area extends Resource
@@ -109,7 +111,15 @@ class Area extends Resource
     public function actions(Request $request)
     {
         return [
-            new DownloadExcel(),
+            (new DownloadExcel)
+                ->withHeadings()
+                ->withWriterType(Excel::CSV)
+                ->onSuccess(function (){
+                    return Action::message("Export Successful!");
+                })
+                ->onFailure(function (){
+                    return Action::danger("Could not export data");
+                })
         ];
     }
 }
