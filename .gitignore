@@ -14,3 +14,5 @@ npm-debug.log
 yarn-error.log
 /.gitignore
 /nova
+package-lock.json
+composer.lock
