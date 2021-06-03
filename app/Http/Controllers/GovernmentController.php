@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Government;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -23,6 +24,35 @@ class GovernmentController extends Controller
                         ->get();
         return response($governments, 200)
             ->header('Content-Type', 'application/json');
+    }
+
+    /**
+     *  Display activated governments
+     * @return \Illuminate\Http\Response
+     */
+    public function getActive(){
+        $governments = Government::where('is_active', true)->get();
+        return response($governments, 200)
+            ->header('Content-Type', 'application/json');
+    }
+
+    /**
+     * Deactivate inactive governments in DB
+     */
+    public function deactivateGovernments($activatedInactiveGovernments){
+        foreach ($activatedInactiveGovernments as $government){
+            $government->update(['is_active' => false]);
+        }
+    }
+
+    /**
+     * Get inactive governments(no cities attached) set as active
+     * @return Collection
+     */
+    public function getActivatedInactiveGovernments(){
+        return Government::doesnthave('cities')
+            ->where('is_active', true)
+            ->get();
     }
 
     /**

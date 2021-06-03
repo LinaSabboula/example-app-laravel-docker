@@ -198,7 +198,7 @@ export default {
             }
         },
         async populateList() {
-            const url = import.meta.env.VITE_APP_GET_ALL_GOVS;
+            const url = import.meta.env.VITE_APP_GET_ACTIVE_GOVS;
             try {
                 const response = await axios.get(url);
                 if (response.data) {

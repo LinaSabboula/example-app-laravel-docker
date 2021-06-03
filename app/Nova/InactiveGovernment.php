@@ -3,28 +3,27 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Government extends Resource
+class InactiveGovernment extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Government::class;
+    public static $model = \App\Models\InactiveGovernment::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -33,11 +32,13 @@ class Government extends Resource
      */
     public static $search = [
         'id',
-        'name',
-        'created_at',
-        'updated_at',
     ];
-
+    /**
+     * The relationships that should be eager loaded on index queries.
+     *
+     * @var array
+     */
+    public static $with = ['government'];
     /**
      * Get the fields displayed by the resource.
      *
@@ -48,11 +49,10 @@ class Government extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Name', 'name')->sortable(),
-            Boolean::make('Active', 'is_active')->sortable(),
+            BelongsTo::make('Government'),
+            Number::make('Government ID', 'government_id')->sortable(),
             DateTime::make('Created At', 'created_at')->sortable(),
             DateTime::make('Updated At', 'updated_at')->sortable(),
-            HasMany::make('Cities'),
         ];
     }
 
@@ -75,10 +75,7 @@ class Government extends Resource
      */
     public function filters(Request $request)
     {
-        return [
-            new Filters\FromDateFilter,
-            new Filters\ToDateFilter,
-        ];
+        return [];
     }
 
     /**
