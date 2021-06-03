@@ -14,7 +14,7 @@ class AddIsActiveToGovernmentsTable extends Migration
     public function up()
     {
         Schema::table('governments', function (Blueprint $table) {
-                $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->default(false);
         });
     }
 
@@ -25,8 +25,10 @@ class AddIsActiveToGovernmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('governments', function (Blueprint $table) {
+        if (Schema::hasColumn('governments', 'is_active')) {
+            Schema::table('governments', function (Blueprint $table) {
                 $table->dropColumn('is_active');
-        });
+            });
+        }
     }
 }
