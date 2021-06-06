@@ -1,7 +1,10 @@
+import axios from "axios";
+
 const governmentModule = {
     namespaced: true,
     state: () => ({
         governmentList: [],
+        governmentHeaders: ['ID', 'Name', 'Active', 'Created', 'Updated'],
     }),
     mutations: {
         addToGovernmentList(state, value) {
