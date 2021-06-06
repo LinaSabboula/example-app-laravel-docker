@@ -1,9 +1,13 @@
+import governmentModule from "./store/index";
+
 Nova.booting((Vue, router, store) => {
-  router.addRoutes([
-    {
-      name: 'government-manager',
-      path: '/government-manager',
-      component: require('./components/Tool'),
-    },
-  ])
-})
+    store.registerModule('governmentModule', governmentModule);
+    router.addRoutes([
+        {
+            name: 'government-manager',
+            path: '/government-manager',
+            component: require('./components/Tool'),
+        },
+    ]);
+});
+
