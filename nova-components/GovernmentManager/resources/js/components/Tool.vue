@@ -35,27 +35,16 @@ export default {
         })
     },
     mounted() {
-        this.getGovernments();
+        this.getGovernmentList();
     },
     methods: {
         ...mapMutations('governmentModule', [
             'clearGovernmentList',
             'addToGovernmentList'
         ]),
-        async getGovernments() {
-            try {
-                const url = 'http://127.0.0.1/nova-api/governments';
-                const response = await axios.get(url);
-                if (response.data && response.data.resources) {
-                    this.clearGovernmentList();
-                    for (let government of response.data.resources) {
-                        this.addToGovernmentList(government);
-                    }
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
+        ...mapActions('governmentModule', [
+            'getGovernmentList'
+            ]),
     }
 }
 </script>

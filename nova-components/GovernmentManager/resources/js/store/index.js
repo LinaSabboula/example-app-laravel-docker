@@ -17,5 +17,22 @@ const governmentModule = {
             state.governmentList = [];
         },
     },
+    actions: {
+        getGovernmentList({ commit }) {
+            const url = 'http://127.0.0.1/nova-api/governments';
+            axios.get(url)
+                .then(function (response) {
+                    if (response.data && response.data.resources) {
+                        commit('clearGovernmentList');
+                        for (let government of response.data.resources) {
+                            commit('addToGovernmentList', government)
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }
+    },
 };
 export default governmentModule;
