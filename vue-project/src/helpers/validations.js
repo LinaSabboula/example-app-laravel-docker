@@ -20,4 +20,9 @@ export function isSpecificLength(input, length){
     return input.length >= length;
 }
 
+export function doesMatch(input1, input2){
+    if (input2){
+        return input1.toLowerCase() === makeSingleSpaced(input2.toLowerCase());
+    }
+}
 
